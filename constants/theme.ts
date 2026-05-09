@@ -12,6 +12,11 @@ export const Colors = {
   light: {
     text: '#11181C',
     background: '#fff',
+    card: '#F5F7FA',
+    border: '#D7DEE5',
+    mutedText: '#687076',
+    selectedBackground: '#0A7EA41A',
+    selectedText: '#085A76',
     tint: tintColorLight,
     icon: '#687076',
     tabIconDefault: '#687076',
@@ -20,6 +25,11 @@ export const Colors = {
   dark: {
     text: '#ECEDEE',
     background: '#151718',
+    card: '#1D2125',
+    border: '#343A40',
+    mutedText: '#9BA1A6',
+    selectedBackground: '#FFFFFF1F',
+    selectedText: '#FFFFFF',
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',

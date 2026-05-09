@@ -16,7 +16,22 @@
       "title": "Nowy Trening"
     },
     "profile": {
-      "title": "Profil"
+      "title": "Profil",
+      "description": "Dostosuj wyglad aplikacji i jezyk.",
+      "sections": {
+        "appearance": "Wyglad",
+        "language": "Jezyk"
+      },
+      "theme": {
+        "description": "Wybierz sposob wyswietlania aplikacji.",
+        "light": "Jasny",
+        "dark": "Ciemny"
+      },
+      "language": {
+        "description": "Wybierz jezyk uzywany w aplikacji.",
+        "en": "English",
+        "pl": "Polski"
+      }
     }
   },
   "modalScreen": {

@@ -16,7 +16,22 @@
       "title": "New Training"
     },
     "profile": {
-      "title": "Profile"
+      "title": "Profile",
+      "description": "Adjust the app appearance and language.",
+      "sections": {
+        "appearance": "Appearance",
+        "language": "Language"
+      },
+      "theme": {
+        "description": "Choose how the app should look.",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "language": {
+        "description": "Choose the language used across the app.",
+        "en": "English",
+        "pl": "Polski"
+      }
     }
   },
   "modalScreen": {
