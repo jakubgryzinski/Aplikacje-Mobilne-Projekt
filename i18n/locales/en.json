@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "home": "Home",
+    "explore": "Explore"
+  },
+  "homeScreen": {
+    "title": "Home"
+  },
+  "exploreScreen": {
+    "title": "Explore"
+  },
+  "modalScreen": {
+    "navigationTitle": "Modal",
+    "title": "This is a modal",
+    "goHome": "Go to home screen"
+  }
+}

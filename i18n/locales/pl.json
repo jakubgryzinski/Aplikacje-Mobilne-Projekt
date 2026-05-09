@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "home": "Strona glowna",
+    "explore": "Odkrywaj"
+  },
+  "homeScreen": {
+    "title": "Strona glowna"
+  },
+  "exploreScreen": {
+    "title": "Odkrywaj"
+  },
+  "modalScreen": {
+    "navigationTitle": "Modal",
+    "title": "To jest modal",
+    "goHome": "Przejdz do strony glownej"
+  }
+}
