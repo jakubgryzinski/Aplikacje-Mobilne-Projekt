@@ -1,13 +1,23 @@
 {
   "tabs": {
-    "home": "Home",
-    "explore": "Explore"
+    "trainingHistory": "Training History",
+    "statistics": "Statistics",
+    "newTraining": "New Training",
+    "profile": "Profile"
   },
-  "homeScreen": {
-    "title": "Home"
-  },
-  "exploreScreen": {
-    "title": "Explore"
+  "tabScreens": {
+    "trainingHistory": {
+      "title": "Training History"
+    },
+    "statistics": {
+      "title": "Statistics"
+    },
+    "newTraining": {
+      "title": "New Training"
+    },
+    "profile": {
+      "title": "Profile"
+    }
   },
   "modalScreen": {
     "navigationTitle": "Modal",

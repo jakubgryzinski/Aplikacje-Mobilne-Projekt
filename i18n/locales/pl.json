@@ -1,13 +1,23 @@
 {
   "tabs": {
-    "home": "Strona glowna",
-    "explore": "Odkrywaj"
+    "trainingHistory": "Historia Treningów",
+    "statistics": "Statystyki",
+    "newTraining": "Nowy Trening",
+    "profile": "Profil"
   },
-  "homeScreen": {
-    "title": "Strona glowna"
-  },
-  "exploreScreen": {
-    "title": "Odkrywaj"
+  "tabScreens": {
+    "trainingHistory": {
+      "title": "Historia Treningów"
+    },
+    "statistics": {
+      "title": "Statystyki"
+    },
+    "newTraining": {
+      "title": "Nowy Trening"
+    },
+    "profile": {
+      "title": "Profil"
+    }
   },
   "modalScreen": {
     "navigationTitle": "Modal",
