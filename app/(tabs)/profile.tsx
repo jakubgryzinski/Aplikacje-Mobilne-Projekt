@@ -12,6 +12,7 @@ import { useAppSettingsStore } from '@/store/app-settings';
 import { OptionToggleGroup } from './components/option-toggle-group';
 import { ProfileDetailsForm } from './components/profile-details-form';
 import { ProfileSettingSection } from './components/profile-setting-section';
+import { WeightHistorySection } from './components/weight-history-section';
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
@@ -33,6 +34,10 @@ export default function ProfileScreen() {
 
           <ProfileSettingSection title={t('tabScreens.profile.sections.profileDetails')}>
             <ProfileDetailsForm />
+          </ProfileSettingSection>
+
+          <ProfileSettingSection title={t('tabScreens.profile.weightHistory.title')}>
+            <WeightHistorySection />
           </ProfileSettingSection>
 
           <ProfileSettingSection title={t('tabScreens.profile.sections.appearance')}>

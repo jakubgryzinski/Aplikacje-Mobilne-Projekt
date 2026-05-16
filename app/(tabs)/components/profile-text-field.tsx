@@ -7,6 +7,7 @@ import { useAppTheme } from '@/hooks/use-app-theme';
 
 export type ProfileTextFieldProps = {
   accessibilityLabel?: string;
+  editable?: boolean;
   keyboardType?: KeyboardTypeOptions;
   label: string;
   onChangeText: (value: string) => void;
@@ -16,6 +17,7 @@ export type ProfileTextFieldProps = {
 
 export function ProfileTextField({
   accessibilityLabel,
+  editable = true,
   keyboardType,
   label,
   onChangeText,
@@ -30,6 +32,7 @@ export function ProfileTextField({
       <ThemedText type="defaultSemiBold">{label}</ThemedText>
       <TextInput
         accessibilityLabel={accessibilityLabel ?? label}
+        editable={editable}
         keyboardType={keyboardType}
         onChangeText={onChangeText}
         placeholder={placeholder}
@@ -41,6 +44,7 @@ export function ProfileTextField({
             backgroundColor: palette.card,
             borderColor: palette.border,
             color: palette.text,
+            opacity: editable ? 1 : 0.7,
           },
         ]}
         value={value}

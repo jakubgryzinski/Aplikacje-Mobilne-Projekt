@@ -12,6 +12,7 @@ type OptionToggleGroupOption<T extends string> = {
 
 type OptionToggleGroupProps<T extends string> = {
   accessibilityLabel: string;
+  disabled?: boolean;
   onChange: (value: T) => void;
   options: [OptionToggleGroupOption<T>, OptionToggleGroupOption<T>];
   selectedValue: T | null;
@@ -19,6 +20,7 @@ type OptionToggleGroupProps<T extends string> = {
 
 export function OptionToggleGroup<T extends string>({
   accessibilityLabel,
+  disabled = false,
   onChange,
   options,
   selectedValue,
@@ -37,12 +39,14 @@ export function OptionToggleGroup<T extends string>({
             accessibilityLabel={`${accessibilityLabel}: ${option.label}`}
             accessibilityRole="button"
             accessibilityState={{ selected: isSelected }}
+            disabled={disabled}
             onPress={() => onChange(option.value)}
             style={[
               styles.option,
               {
                 backgroundColor: isSelected ? palette.selectedBackground : palette.background,
                 borderColor: isSelected ? palette.tint : palette.border,
+                opacity: disabled ? 0.7 : 1,
               },
             ]}>
             <ThemedText

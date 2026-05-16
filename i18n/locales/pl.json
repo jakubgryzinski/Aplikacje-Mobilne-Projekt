@@ -35,6 +35,7 @@
       "placeholders": {
         "name": "Wpisz swoje imię",
         "height": "Podaj swój wzrost",
+        "measurementDate": "RRRR-MM-DD",
         "currentWeight": "Podaj swoją aktualną wagę"
       },
       "gender": {
@@ -59,7 +60,9 @@
       "form": {
         "saveAction": "Zapisz",
         "editAction": "Edytuj",
-        "cancelAction": "Anuluj"
+        "cancelAction": "Anuluj",
+        "readOnlyHint": "Wybierz Edytuj, aby zmienić dane profilu lub dodać zapisany pomiar wagi.",
+        "saveError": "Nie udało się teraz zapisać zmian profilu."
       },
       "weightHistory": {
         "title": "Historia Wagi",
@@ -69,7 +72,9 @@
         "editAction": "Edytuj Pomiar",
         "deleteAction": "Usuń Pomiar",
         "saveAction": "Zapisz Pomiar",
-        "cancelAction": "Anuluj"
+        "cancelAction": "Anuluj",
+        "updateError": "Nie udało się teraz zaktualizować tego pomiaru wagi.",
+        "deleteError": "Nie udało się teraz usunąć tego pomiaru wagi."
       },
       "chart": {
         "title": "Wykres Wagi",

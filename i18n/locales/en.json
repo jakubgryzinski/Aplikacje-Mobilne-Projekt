@@ -35,6 +35,7 @@
       "placeholders": {
         "name": "Enter your name",
         "height": "Enter your height",
+        "measurementDate": "YYYY-MM-DD",
         "currentWeight": "Enter your current weight"
       },
       "gender": {
@@ -59,7 +60,9 @@
       "form": {
         "saveAction": "Save",
         "editAction": "Edit",
-        "cancelAction": "Cancel"
+        "cancelAction": "Cancel",
+        "readOnlyHint": "Tap Edit to change your profile details or add a saved weight entry.",
+        "saveError": "Unable to save your profile changes right now."
       },
       "weightHistory": {
         "title": "Weight History",
@@ -69,7 +72,9 @@
         "editAction": "Edit Entry",
         "deleteAction": "Delete Entry",
         "saveAction": "Save Entry",
-        "cancelAction": "Cancel"
+        "cancelAction": "Cancel",
+        "updateError": "Unable to update this weight entry right now.",
+        "deleteError": "Unable to delete this weight entry right now."
       },
       "chart": {
         "title": "Weight Chart",

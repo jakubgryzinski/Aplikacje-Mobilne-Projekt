@@ -7,6 +7,7 @@ import { useAppTheme } from '@/hooks/use-app-theme';
 
 export type ProfileNumberFieldProps = {
   accessibilityLabel?: string;
+  editable?: boolean;
   label: string;
   onChangeText: (value: string) => void;
   placeholder?: string;
@@ -16,6 +17,7 @@ export type ProfileNumberFieldProps = {
 
 export function ProfileNumberField({
   accessibilityLabel,
+  editable = true,
   label,
   onChangeText,
   placeholder,
@@ -38,6 +40,7 @@ export function ProfileNumberField({
         ]}>
         <TextInput
           accessibilityLabel={accessibilityLabel ?? label}
+          editable={editable}
           keyboardType="decimal-pad"
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -47,6 +50,7 @@ export function ProfileNumberField({
             styles.input,
             {
               color: palette.text,
+              opacity: editable ? 1 : 0.7,
             },
           ]}
           value={value}
