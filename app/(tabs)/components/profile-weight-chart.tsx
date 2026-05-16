@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 import { useAppSettingsStore } from '@/store/app-settings';
@@ -70,7 +69,7 @@ export function ProfileWeightChart() {
   }
 
   return (
-    <ThemedView
+    <View
       accessible
       accessibilityLabel={accessibilityLabel}
       style={[
@@ -80,26 +79,26 @@ export function ProfileWeightChart() {
           borderColor: palette.border,
         },
       ]}>
-      <ThemedView style={styles.header}>
+      <View style={styles.header}>
         <ThemedText type="defaultSemiBold">{t('tabScreens.profile.chart.title')}</ThemedText>
         {latestPointSummary ? (
           <ThemedText style={{ color: palette.mutedText }}>
             {`${t('tabScreens.profile.chart.latestPoint')}: ${latestPointSummary}`}
           </ThemedText>
         ) : null}
-      </ThemedView>
+      </View>
 
       {weightHistoryEntries.length === 0 ? (
         <ThemedText style={{ color: palette.mutedText }}>
           {t('tabScreens.profile.chart.empty')}
         </ThemedText>
       ) : (
-        <ThemedView style={styles.chartContent}>
-          <ThemedView style={styles.axisHeader}>
+        <View style={styles.chartContent}>
+          <View style={styles.axisHeader}>
             <ThemedText style={{ color: palette.mutedText }}>
               {`${t('tabScreens.profile.chart.yAxis')} (${t('tabScreens.profile.units.kilograms')})`}
             </ThemedText>
-          </ThemedView>
+          </View>
 
           <View onLayout={updateViewportWidth} style={styles.chartViewport}>
             <ScrollView
@@ -179,9 +178,9 @@ export function ProfileWeightChart() {
           <ThemedText style={[styles.axisCaption, { color: palette.mutedText }]}>
             {t('tabScreens.profile.chart.xAxis')}
           </ThemedText>
-        </ThemedView>
+        </View>
       )}
-    </ThemedView>
+    </View>
   );
 }
 
@@ -195,8 +194,8 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 16,
     borderWidth: 1,
-    gap: 12,
-    padding: 16,
+    gap: 10,
+    padding: 14,
   },
   chartContent: {
     gap: 12,

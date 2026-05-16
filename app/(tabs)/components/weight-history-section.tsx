@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { useAppSettingsStore } from '@/store/app-settings';
 import {
   deleteProfileWeightEntry,
@@ -12,6 +11,7 @@ import {
 import { useProfileStore } from '@/store/profile-store';
 
 import { ProfileWeightChart } from './profile-weight-chart';
+import { ProfileWeightEntryForm } from './profile-weight-entry-form';
 import { WeightHistoryRow } from './weight-history-row';
 
 function getLocale(languagePreference: 'en' | 'pl'): string {
@@ -26,14 +26,14 @@ export function WeightHistorySection() {
   const locale = getLocale(languagePreference);
 
   return (
-    <ThemedView style={styles.section}>
-      <ThemedText>{t('tabScreens.profile.weightHistory.description')}</ThemedText>
+    <View style={styles.section}>
+      <ProfileWeightEntryForm />
       <ProfileWeightChart />
 
       {weightHistoryEntries.length === 0 ? (
         <ThemedText>{t('tabScreens.profile.weightHistory.empty')}</ThemedText>
       ) : (
-        <ThemedView style={styles.list}>
+        <View style={styles.list}>
           {weightHistoryEntries.map((weightHistoryEntry) => (
             <WeightHistoryRow
               key={weightHistoryEntry.id}
@@ -63,9 +63,9 @@ export function WeightHistorySection() {
               onStartEditing={setEditingEntryId}
             />
           ))}
-        </ThemedView>
+        </View>
       )}
-    </ThemedView>
+    </View>
   );
 }
 
@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   section: {
-    gap: 12,
+    gap: 16,
   },
 });

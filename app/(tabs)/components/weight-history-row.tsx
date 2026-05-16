@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 import type { WeightHistoryEntry } from '@/store/profile-types';
@@ -136,7 +135,7 @@ export function WeightHistoryRow({
   }
 
   return (
-    <ThemedView
+    <View
       style={[
         styles.card,
         {
@@ -145,7 +144,7 @@ export function WeightHistoryRow({
         },
       ]}>
       {isEditing ? (
-        <ThemedView style={styles.editingContent}>
+        <View style={styles.editingContent}>
           <ProfileTextField
             editable={!isSubmitting}
             keyboardType="numbers-and-punctuation"
@@ -196,7 +195,7 @@ export function WeightHistoryRow({
             <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.form}</ThemedText>
           ) : null}
 
-          <ThemedView style={styles.actions}>
+          <View style={styles.actions}>
             <ProfileActionButton
               disabled={isSubmitting}
               isPrimary
@@ -210,24 +209,24 @@ export function WeightHistoryRow({
               label={t('tabScreens.profile.weightHistory.cancelAction')}
               onPress={onCancelEditing}
             />
-          </ThemedView>
-        </ThemedView>
+          </View>
+        </View>
       ) : (
-        <ThemedView style={styles.displayContent}>
-          <ThemedView style={styles.entrySummary}>
+        <View style={styles.displayContent}>
+          <View style={styles.entrySummary}>
             <ThemedText type="defaultSemiBold">
               {formatMeasurementDateForDisplay(entry.measuredAt, locale)}
             </ThemedText>
             <ThemedText style={{ color: palette.mutedText }}>
               {`${entry.weightKilograms} ${t('tabScreens.profile.units.kilograms')}`}
             </ThemedText>
-          </ThemedView>
+          </View>
 
           {validationState.form ? (
             <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.form}</ThemedText>
           ) : null}
 
-          <ThemedView style={styles.actions}>
+          <View style={styles.actions}>
             <ProfileActionButton
               disabled={isInteractionDisabled || isSubmitting}
               label={t('tabScreens.profile.weightHistory.editAction')}
@@ -240,29 +239,30 @@ export function WeightHistoryRow({
                 void deleteRow();
               }}
             />
-          </ThemedView>
-        </ThemedView>
+          </View>
+        </View>
       )}
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 12,
   },
   card: {
-    gap: 12,
+    gap: 10,
     borderWidth: 1,
     borderRadius: 16,
-    padding: 16,
+    padding: 14,
   },
   displayContent: {
-    gap: 12,
+    gap: 10,
   },
   editingContent: {
-    gap: 12,
+    gap: 10,
   },
   entrySummary: {
     gap: 4,

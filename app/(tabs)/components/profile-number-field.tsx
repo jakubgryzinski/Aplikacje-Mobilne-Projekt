@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -28,7 +28,7 @@ export function ProfileNumberField({
   const palette = Colors[theme];
 
   return (
-    <ThemedView style={styles.field}>
+    <View style={styles.field}>
       <ThemedText type="defaultSemiBold">{label}</ThemedText>
       <ThemedView
         style={[
@@ -57,7 +57,7 @@ export function ProfileNumberField({
         />
         <ThemedText style={{ color: palette.mutedText }}>{unitLabel}</ThemedText>
       </ThemedView>
-    </ThemedView>
+    </View>
   );
 }
 

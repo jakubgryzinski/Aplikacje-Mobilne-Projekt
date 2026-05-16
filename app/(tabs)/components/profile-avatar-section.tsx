@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { ThemedText } from '@/components/themed-text';
@@ -109,12 +109,8 @@ export function ProfileAvatarSection() {
   }
 
   return (
-    <ThemedView style={styles.section}>
-      <ThemedText style={{ color: palette.mutedText }}>
-        {t('tabScreens.profile.avatar.description')}
-      </ThemedText>
-
-      <ThemedView style={styles.avatarContent}>
+    <View style={styles.section}>
+      <View style={styles.avatarContent}>
         <ThemedView
           style={[
             styles.avatarFrame,
@@ -176,16 +172,10 @@ export function ProfileAvatarSection() {
           </ThemedText>
         </Pressable>
 
-        {!avatarUri ? (
-          <ThemedText style={{ color: palette.mutedText }}>
-            {t('tabScreens.profile.avatar.placeholder')}
-          </ThemedText>
-        ) : null}
-
         {errorMessage ? (
           <ThemedText style={{ color: errorTextColor[theme] }}>{errorMessage}</ThemedText>
         ) : null}
-      </ThemedView>
+      </View>
 
       <ProfileAvatarActionSheet
         actions={sheetActions}
@@ -193,7 +183,7 @@ export function ProfileAvatarSection() {
         onClose={closeActionSheet}
         visible={avatarUri !== null && isActionSheetVisible}
       />
-    </ThemedView>
+    </View>
   );
 }
 
@@ -206,16 +196,16 @@ const styles = StyleSheet.create({
     gap: 8,
     borderWidth: 1,
     borderRadius: 999,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
   },
   avatarContent: {
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
   },
   avatarFrame: {
-    width: 144,
-    height: 144,
+    width: 128,
+    height: 128,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
@@ -240,6 +230,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#00000022',
   },
   section: {
-    gap: 12,
+    gap: 8,
   },
 });

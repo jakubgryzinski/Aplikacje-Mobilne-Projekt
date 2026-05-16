@@ -18,10 +18,22 @@
     "profile": {
       "title": "Profile",
       "description": "Manage your profile details, weight tracking, appearance, and language.",
+      "overview": {
+        "description": "Keep your personal details and profile photo together in one place."
+      },
+      "preferences": {
+        "description": "Adjust how the app looks and which language it uses."
+      },
+      "weightTracking": {
+        "description": "Add new measurements and review how your weight changes over time."
+      },
       "sections": {
+        "overview": "Profile Overview",
+        "preferences": "App Preferences",
         "profileDetails": "Profile Details",
         "avatar": "Avatar",
         "weight": "Weight",
+        "weightTracking": "Weight Tracking",
         "appearance": "Appearance",
         "language": "Language"
       },
@@ -64,8 +76,13 @@
         "saveAction": "Save",
         "editAction": "Edit",
         "cancelAction": "Cancel",
-        "readOnlyHint": "Tap Edit to change your profile details or add a saved weight entry.",
+        "readOnlyHint": "Tap Edit to update your profile details.",
         "saveError": "Unable to save your profile changes right now."
+      },
+      "weightEntry": {
+        "title": "Add Weight Entry",
+        "saveAction": "Save Weight Entry",
+        "saveError": "Unable to save your weight entry right now."
       },
       "weightHistory": {
         "title": "Weight History",

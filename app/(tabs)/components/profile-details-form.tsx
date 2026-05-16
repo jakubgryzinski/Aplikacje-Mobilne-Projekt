@@ -1,35 +1,25 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
-import {
-  createProfileWeightEntry,
-  saveProfileIdentity,
-} from '@/store/profile-actions';
+import { updateLanguagePreference, updateThemePreference } from '@/store/app-settings-actions';
+import { useAppSettingsStore } from '@/store/app-settings';
+import { saveProfileIdentity } from '@/store/profile-actions';
 import { useProfileStore } from '@/store/profile-store';
 import type { ProfileDetails, ProfileGender } from '@/store/profile-types';
 
 import { OptionToggleGroup } from './option-toggle-group';
 import { ProfileActionButton } from './profile-action-button';
-import {
-  formatOptionalNumber,
-  getTodayDateInput,
-  parseMeasurementDateInput,
-  parsePositiveNumberInput,
-} from './profile-form-utils';
+import { formatOptionalNumber, parsePositiveNumberInput } from './profile-form-utils';
 import { ProfileNumberField } from './profile-number-field';
 import { ProfileTextField } from './profile-text-field';
 
 type ValidationState = {
   form?: string;
   height?: string;
-  measurementDate?: string;
   name?: string;
-  weight?: string;
 };
 
 const errorTextColor = {
@@ -40,8 +30,9 @@ const errorTextColor = {
 export function ProfileDetailsForm() {
   const { t } = useTranslation();
   const theme = useAppTheme();
-  const palette = Colors[theme];
+  const languagePreference = useAppSettingsStore((state) => state.languagePreference);
   const profileDetails = useProfileStore((state) => state.profileDetails);
+  const themePreference = useAppSettingsStore((state) => state.themePreference);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [nameInput, setNameInput] = useState(profileDetails.name);
@@ -49,9 +40,6 @@ export function ProfileDetailsForm() {
   const [heightInput, setHeightInput] = useState(
     formatOptionalNumber(profileDetails.heightCentimeters)
   );
-  const [newMeasurementDateInput, setNewMeasurementDateInput] = useState(getTodayDateInput());
-  const [newWeightInput, setNewWeightInput] = useState('');
-  const [didEditMeasurementDate, setDidEditMeasurementDate] = useState(false);
   const [validationState, setValidationState] = useState<ValidationState>({});
 
   useEffect(() => {
@@ -62,9 +50,6 @@ export function ProfileDetailsForm() {
     setNameInput(profileDetails.name);
     setDraftGender(profileDetails.gender);
     setHeightInput(formatOptionalNumber(profileDetails.heightCentimeters));
-    setNewMeasurementDateInput(getTodayDateInput());
-    setNewWeightInput('');
-    setDidEditMeasurementDate(false);
     setValidationState({});
   }, [isEditing, profileDetails]);
 
@@ -72,9 +57,6 @@ export function ProfileDetailsForm() {
     setNameInput(profileDetails.name);
     setDraftGender(profileDetails.gender);
     setHeightInput(formatOptionalNumber(profileDetails.heightCentimeters));
-    setNewMeasurementDateInput(getTodayDateInput());
-    setNewWeightInput('');
-    setDidEditMeasurementDate(false);
     setValidationState({});
     setIsEditing(true);
   }
@@ -83,9 +65,6 @@ export function ProfileDetailsForm() {
     setNameInput(profileDetails.name);
     setDraftGender(profileDetails.gender);
     setHeightInput(formatOptionalNumber(profileDetails.heightCentimeters));
-    setNewMeasurementDateInput(getTodayDateInput());
-    setNewWeightInput('');
-    setDidEditMeasurementDate(false);
     setValidationState({});
     setIsEditing(false);
   }
@@ -119,29 +98,6 @@ export function ProfileDetailsForm() {
     }
   }
 
-  function onMeasurementDateChange(value: string) {
-    setNewMeasurementDateInput(value);
-    setDidEditMeasurementDate(true);
-
-    if (validationState.measurementDate || validationState.form) {
-      updateValidationState({
-        form: undefined,
-        measurementDate: undefined,
-      });
-    }
-  }
-
-  function onWeightChange(value: string) {
-    setNewWeightInput(value);
-
-    if (validationState.weight || validationState.form) {
-      updateValidationState({
-        form: undefined,
-        weight: undefined,
-      });
-    }
-  }
-
   async function onSave() {
     if (isSubmitting) {
       return;
@@ -150,8 +106,6 @@ export function ProfileDetailsForm() {
     const nextValidationState: ValidationState = {};
     const trimmedName = nameInput.trim();
     const parsedHeightCentimeters = parsePositiveNumberInput(heightInput);
-    const shouldCreateNewWeightEntry =
-      newWeightInput.trim().length > 0 || didEditMeasurementDate;
 
     if (trimmedName.length === 0) {
       nextValidationState.name = t('tabScreens.profile.validation.nameRequired');
@@ -161,35 +115,6 @@ export function ProfileDetailsForm() {
       nextValidationState.height = t('tabScreens.profile.validation.heightRequired');
     } else if (parsedHeightCentimeters === undefined) {
       nextValidationState.height = t('tabScreens.profile.validation.heightInvalid');
-    }
-
-    let normalizedMeasuredAt: string | undefined;
-    let parsedWeightKilograms: number | null | undefined = null;
-
-    if (shouldCreateNewWeightEntry) {
-      if (newWeightInput.trim().length === 0) {
-        nextValidationState.weight = t('tabScreens.profile.validation.weightRequired');
-      } else {
-        parsedWeightKilograms = parsePositiveNumberInput(newWeightInput);
-
-        if (parsedWeightKilograms === null || parsedWeightKilograms === undefined) {
-          nextValidationState.weight = t('tabScreens.profile.validation.weightInvalid');
-        }
-      }
-
-      if (newMeasurementDateInput.trim().length === 0) {
-        nextValidationState.measurementDate = t(
-          'tabScreens.profile.validation.measurementDateRequired'
-        );
-      } else {
-        normalizedMeasuredAt = parseMeasurementDateInput(newMeasurementDateInput);
-
-        if (!normalizedMeasuredAt) {
-          nextValidationState.measurementDate = t(
-            'tabScreens.profile.validation.measurementDateInvalid'
-          );
-        }
-      }
     }
 
     if (Object.keys(nextValidationState).length > 0) {
@@ -209,22 +134,6 @@ export function ProfileDetailsForm() {
 
     try {
       await saveProfileIdentity(nextProfileDetails);
-
-      if (
-        shouldCreateNewWeightEntry &&
-        parsedWeightKilograms !== null &&
-        parsedWeightKilograms !== undefined &&
-        normalizedMeasuredAt
-      ) {
-        await createProfileWeightEntry({
-          measuredAt: normalizedMeasuredAt,
-          weightKilograms: parsedWeightKilograms,
-        });
-      }
-
-      setNewMeasurementDateInput(getTodayDateInput());
-      setNewWeightInput('');
-      setDidEditMeasurementDate(false);
       setIsEditing(false);
     } catch {
       setValidationState({
@@ -236,7 +145,7 @@ export function ProfileDetailsForm() {
   }
 
   return (
-    <ThemedView style={styles.form}>
+    <View style={styles.form}>
       <ProfileTextField
         accessibilityLabel={t('tabScreens.profile.fields.name')}
         editable={isEditing}
@@ -249,7 +158,7 @@ export function ProfileDetailsForm() {
         <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.name}</ThemedText>
       ) : null}
 
-      <ThemedView style={styles.field}>
+      <View style={styles.field}>
         <ThemedText type="defaultSemiBold">{t('tabScreens.profile.fields.gender')}</ThemedText>
         <OptionToggleGroup
           accessibilityLabel={t('tabScreens.profile.fields.gender')}
@@ -261,7 +170,41 @@ export function ProfileDetailsForm() {
           ]}
           selectedValue={draftGender}
         />
-      </ThemedView>
+      </View>
+
+      <View style={styles.field}>
+        <ThemedText type="defaultSemiBold">
+          {t('tabScreens.profile.sections.appearance')}
+        </ThemedText>
+        <OptionToggleGroup
+          accessibilityLabel={t('tabScreens.profile.sections.appearance')}
+          onChange={(value) => {
+            void updateThemePreference(value);
+          }}
+          options={[
+            { label: t('tabScreens.profile.theme.light'), value: 'light' },
+            { label: t('tabScreens.profile.theme.dark'), value: 'dark' },
+          ]}
+          selectedValue={themePreference}
+        />
+      </View>
+
+      <View style={styles.field}>
+        <ThemedText type="defaultSemiBold">
+          {t('tabScreens.profile.sections.language')}
+        </ThemedText>
+        <OptionToggleGroup
+          accessibilityLabel={t('tabScreens.profile.sections.language')}
+          onChange={(value) => {
+            void updateLanguagePreference(value);
+          }}
+          options={[
+            { label: t('tabScreens.profile.language.en'), value: 'en' },
+            { label: t('tabScreens.profile.language.pl'), value: 'pl' },
+          ]}
+          selectedValue={languagePreference}
+        />
+      </View>
 
       <ProfileNumberField
         accessibilityLabel={t('tabScreens.profile.fields.height')}
@@ -276,46 +219,11 @@ export function ProfileDetailsForm() {
         <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.height}</ThemedText>
       ) : null}
 
-      <ThemedView style={styles.weightDraftSection}>
-        <ThemedText type="defaultSemiBold">{t('tabScreens.profile.sections.weight')}</ThemedText>
-        <ThemedText style={{ color: palette.mutedText }}>
-          {t('tabScreens.profile.weightHistory.description')}
-        </ThemedText>
-      </ThemedView>
-
-      <ProfileTextField
-        accessibilityLabel={t('tabScreens.profile.fields.measurementDate')}
-        editable={isEditing}
-        keyboardType="numbers-and-punctuation"
-        label={t('tabScreens.profile.fields.measurementDate')}
-        onChangeText={onMeasurementDateChange}
-        placeholder={t('tabScreens.profile.placeholders.measurementDate')}
-        value={newMeasurementDateInput}
-      />
-      {validationState.measurementDate ? (
-        <ThemedText style={{ color: errorTextColor[theme] }}>
-          {validationState.measurementDate}
-        </ThemedText>
-      ) : null}
-
-      <ProfileNumberField
-        accessibilityLabel={t('tabScreens.profile.fields.currentWeight')}
-        editable={isEditing}
-        label={t('tabScreens.profile.fields.currentWeight')}
-        onChangeText={onWeightChange}
-        placeholder={t('tabScreens.profile.placeholders.currentWeight')}
-        unitLabel={t('tabScreens.profile.units.kilograms')}
-        value={newWeightInput}
-      />
-      {validationState.weight ? (
-        <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.weight}</ThemedText>
-      ) : null}
-
       {validationState.form ? (
         <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.form}</ThemedText>
       ) : null}
 
-      <ThemedView style={styles.actions}>
+      <View style={styles.actions}>
         {isEditing ? (
           <>
             <ProfileActionButton
@@ -338,37 +246,21 @@ export function ProfileDetailsForm() {
             onPress={startEditing}
           />
         )}
-      </ThemedView>
-
-      {!isEditing ? (
-        <ThemedView style={[styles.readOnlyHint, { borderColor: palette.border }]}>
-          <ThemedText style={{ color: palette.mutedText }}>
-            {t('tabScreens.profile.form.readOnlyHint')}
-          </ThemedText>
-        </ThemedView>
-      ) : null}
-    </ThemedView>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 12,
   },
   field: {
     gap: 8,
   },
   form: {
-    gap: 12,
-  },
-  readOnlyHint: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  weightDraftSection: {
-    gap: 4,
+    gap: 10,
   },
 });

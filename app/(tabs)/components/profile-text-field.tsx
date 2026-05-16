@@ -1,7 +1,6 @@
-import { StyleSheet, TextInput, type KeyboardTypeOptions } from 'react-native';
+import { StyleSheet, TextInput, View, type KeyboardTypeOptions } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 
@@ -28,7 +27,7 @@ export function ProfileTextField({
   const palette = Colors[theme];
 
   return (
-    <ThemedView style={styles.field}>
+    <View style={styles.field}>
       <ThemedText type="defaultSemiBold">{label}</ThemedText>
       <TextInput
         accessibilityLabel={accessibilityLabel ?? label}
@@ -49,7 +48,7 @@ export function ProfileTextField({
         ]}
         value={value}
       />
-    </ThemedView>
+    </View>
   );
 }
 

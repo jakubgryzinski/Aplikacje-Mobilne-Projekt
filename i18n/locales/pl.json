@@ -18,10 +18,22 @@
     "profile": {
       "title": "Profil",
       "description": "Zarządzaj danymi profilu, historią wagi, wyglądem aplikacji i językiem.",
+      "overview": {
+        "description": "Trzymaj swoje dane osobowe i zdjęcie profilowe razem w jednym miejscu."
+      },
+      "preferences": {
+        "description": "Dostosuj wygląd aplikacji i używany w niej język."
+      },
+      "weightTracking": {
+        "description": "Dodawaj nowe pomiary i sprawdzaj, jak zmienia się Twoja waga w czasie."
+      },
       "sections": {
+        "overview": "Przegląd Profilu",
+        "preferences": "Ustawienia Aplikacji",
         "profileDetails": "Dane Profilu",
         "avatar": "Awatar",
         "weight": "Waga",
+        "weightTracking": "Śledzenie Wagi",
         "appearance": "Wygląd",
         "language": "Język"
       },
@@ -64,8 +76,13 @@
         "saveAction": "Zapisz",
         "editAction": "Edytuj",
         "cancelAction": "Anuluj",
-        "readOnlyHint": "Wybierz Edytuj, aby zmienić dane profilu lub dodać zapisany pomiar wagi.",
+        "readOnlyHint": "Wybierz Edytuj, aby zmienić dane profilu.",
         "saveError": "Nie udało się teraz zapisać zmian profilu."
+      },
+      "weightEntry": {
+        "title": "Dodaj Pomiar Wagi",
+        "saveAction": "Zapisz Pomiar Wagi",
+        "saveError": "Nie udało się teraz zapisać pomiaru wagi."
       },
       "weightHistory": {
         "title": "Historia Wagi",
