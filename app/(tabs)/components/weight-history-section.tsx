@@ -11,6 +11,7 @@ import {
 } from '@/store/profile-actions';
 import { useProfileStore } from '@/store/profile-store';
 
+import { ProfileWeightChart } from './profile-weight-chart';
 import { WeightHistoryRow } from './weight-history-row';
 
 function getLocale(languagePreference: 'en' | 'pl'): string {
@@ -27,6 +28,7 @@ export function WeightHistorySection() {
   return (
     <ThemedView style={styles.section}>
       <ThemedText>{t('tabScreens.profile.weightHistory.description')}</ThemedText>
+      <ProfileWeightChart />
 
       {weightHistoryEntries.length === 0 ? (
         <ThemedText>{t('tabScreens.profile.weightHistory.empty')}</ThemedText>
