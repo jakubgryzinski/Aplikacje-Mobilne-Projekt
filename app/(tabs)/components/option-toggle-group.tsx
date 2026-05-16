@@ -14,7 +14,7 @@ type OptionToggleGroupProps<T extends string> = {
   accessibilityLabel: string;
   onChange: (value: T) => void;
   options: [OptionToggleGroupOption<T>, OptionToggleGroupOption<T>];
-  selectedValue: T;
+  selectedValue: T | null;
 };
 
 export function OptionToggleGroup<T extends string>({

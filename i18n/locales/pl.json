@@ -32,6 +32,11 @@
         "currentWeight": "Aktualna Waga",
         "measurementDate": "Data Pomiaru"
       },
+      "placeholders": {
+        "name": "Wpisz swoje imię",
+        "height": "Podaj swój wzrost",
+        "currentWeight": "Podaj swoją aktualną wagę"
+      },
       "gender": {
         "male": "Mężczyzna",
         "female": "Kobieta"

@@ -10,6 +10,7 @@ import { updateLanguagePreference, updateThemePreference } from '@/store/app-set
 import { useAppSettingsStore } from '@/store/app-settings';
 
 import { OptionToggleGroup } from './components/option-toggle-group';
+import { ProfileDetailsForm } from './components/profile-details-form';
 import { ProfileSettingSection } from './components/profile-setting-section';
 
 export default function ProfileScreen() {
@@ -29,6 +30,10 @@ export default function ProfileScreen() {
               {t('tabScreens.profile.description')}
             </ThemedText>
           </ThemedView>
+
+          <ProfileSettingSection title={t('tabScreens.profile.sections.profileDetails')}>
+            <ProfileDetailsForm />
+          </ProfileSettingSection>
 
           <ProfileSettingSection title={t('tabScreens.profile.sections.appearance')}>
             <ThemedText style={{ color: palette.mutedText }}>

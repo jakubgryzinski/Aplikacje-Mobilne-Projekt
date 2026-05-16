@@ -32,6 +32,11 @@
         "currentWeight": "Current Weight",
         "measurementDate": "Measurement Date"
       },
+      "placeholders": {
+        "name": "Enter your name",
+        "height": "Enter your height",
+        "currentWeight": "Enter your current weight"
+      },
       "gender": {
         "male": "Male",
         "female": "Female"
