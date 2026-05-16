@@ -39,6 +39,12 @@
           }
         }
       ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Aplikacje-Mobilne-Projekt to access your photos so you can choose a profile picture."
+        }
+      ],
       "expo-sqlite"
     ],
     "experiments": {

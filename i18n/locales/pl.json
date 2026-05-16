@@ -55,7 +55,10 @@
         "chooseAction": "Wybierz Zdjęcie",
         "galleryAction": "Wybierz z Galerii",
         "cancelAction": "Anuluj",
-        "defaultAlt": "Domyślny awatar profilu"
+        "defaultAlt": "Domyślny awatar profilu",
+        "permissionDenied": "Zezwól na dostęp do galerii, aby wybrać zdjęcie profilowe.",
+        "pickerError": "Nie udało się teraz wybrać zdjęcia profilowego.",
+        "removeError": "Nie udało się teraz usunąć zdjęcia profilowego."
       },
       "form": {
         "saveAction": "Zapisz",

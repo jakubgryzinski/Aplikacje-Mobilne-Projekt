@@ -55,7 +55,10 @@
         "chooseAction": "Choose Photo",
         "galleryAction": "Choose from Gallery",
         "cancelAction": "Cancel",
-        "defaultAlt": "Default profile avatar"
+        "defaultAlt": "Default profile avatar",
+        "permissionDenied": "Allow photo library access to choose a profile photo.",
+        "pickerError": "Unable to choose a profile photo right now.",
+        "removeError": "Unable to remove your profile photo right now."
       },
       "form": {
         "saveAction": "Save",

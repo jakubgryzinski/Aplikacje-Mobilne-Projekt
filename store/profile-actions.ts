@@ -1,3 +1,5 @@
+import * as ImagePicker from 'expo-image-picker';
+
 import {
   createWeightHistoryEntry,
   deleteWeightHistoryEntry,
@@ -14,6 +16,27 @@ import {
   type WeightHistoryEntry,
 } from '@/store/profile-types';
 import { useProfileStore } from '@/store/profile-store';
+
+export type ProfileAvatarErrorCode = 'permission-denied' | 'picker-failed';
+
+export type ProfileAvatarError = Error & {
+  code: ProfileAvatarErrorCode;
+};
+
+function createProfileAvatarError(
+  code: ProfileAvatarErrorCode,
+  message: string
+): ProfileAvatarError {
+  return Object.assign(new Error(message), { code });
+}
+
+export function isProfileAvatarError(error: unknown): error is ProfileAvatarError {
+  return (
+    error instanceof Error &&
+    'code' in error &&
+    (error.code === 'permission-denied' || error.code === 'picker-failed')
+  );
+}
 
 function sortWeightHistoryEntries(
   weightHistoryEntries: WeightHistoryEntry[]
@@ -58,6 +81,48 @@ export async function hydrateProfileState() {
   }
 }
 
+export async function pickProfileAvatar(): Promise<string | null> {
+  try {
+    const permissionResponse = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permissionResponse.granted) {
+      throw createProfileAvatarError(
+        'permission-denied',
+        'Media library permission is required to choose a profile photo.'
+      );
+    }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      mediaTypes: ['images'],
+      quality: 0.8,
+    });
+
+    if (pickerResult.canceled) {
+      return null;
+    }
+
+    const selectedAsset = pickerResult.assets[0];
+
+    if (!selectedAsset?.uri) {
+      throw createProfileAvatarError('picker-failed', 'Selected image is missing a URI.');
+    }
+
+    return selectedAsset.uri;
+  } catch (error) {
+    if (isProfileAvatarError(error)) {
+      throw error;
+    }
+
+    console.error('Failed to pick profile avatar.', error);
+    throw createProfileAvatarError(
+      'picker-failed',
+      'Unable to open the image picker for the profile avatar.'
+    );
+  }
+}
+
 export async function saveProfileIdentity(profileDetails: ProfileDetails) {
   try {
     const savedProfileDetails = await saveProfileDetails(profileDetails);
@@ -68,6 +133,24 @@ export async function saveProfileIdentity(profileDetails: ProfileDetails) {
     });
   } catch (error) {
     console.error('Failed to save profile details.', error);
+    throw error;
+  }
+}
+
+export async function saveProfileAvatar(avatarUri: string | null) {
+  try {
+    const profileStore = useProfileStore.getState();
+    const savedProfileDetails = await saveProfileDetails({
+      ...profileStore.profileDetails,
+      avatarUri,
+    });
+
+    useProfileStore.getState().hydrateProfile({
+      profileDetails: savedProfileDetails,
+      weightHistoryEntries: profileStore.weightHistoryEntries,
+    });
+  } catch (error) {
+    console.error('Failed to save profile avatar.', error);
     throw error;
   }
 }

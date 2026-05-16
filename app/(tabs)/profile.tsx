@@ -10,6 +10,7 @@ import { updateLanguagePreference, updateThemePreference } from '@/store/app-set
 import { useAppSettingsStore } from '@/store/app-settings';
 
 import { OptionToggleGroup } from './components/option-toggle-group';
+import { ProfileAvatarSection } from './components/profile-avatar-section';
 import { ProfileDetailsForm } from './components/profile-details-form';
 import { ProfileSettingSection } from './components/profile-setting-section';
 import { WeightHistorySection } from './components/weight-history-section';
@@ -31,6 +32,10 @@ export default function ProfileScreen() {
               {t('tabScreens.profile.description')}
             </ThemedText>
           </ThemedView>
+
+          <ProfileSettingSection title={t('tabScreens.profile.sections.avatar')}>
+            <ProfileAvatarSection />
+          </ProfileSettingSection>
 
           <ProfileSettingSection title={t('tabScreens.profile.sections.profileDetails')}>
             <ProfileDetailsForm />
