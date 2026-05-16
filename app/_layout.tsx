@@ -9,7 +9,9 @@ import 'react-native-reanimated';
 import { initializeSettingsStorage, loadSettings } from '@/database/settings-repository';
 import i18n, { resolveAppLanguage } from '@/i18n';
 import { useAppTheme } from '@/hooks/use-app-theme';
-import { useAppSettingsStore } from '@/store/app-settings';
+import { hydrateProfileState } from '@/store/profile-actions';
+import { useProfileStore } from '@/store/profile-store';
+import { type AppSettings, useAppSettingsStore } from '@/store/app-settings';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -20,12 +22,13 @@ void SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const { t } = useTranslation();
   const theme = useAppTheme();
-  const isHydrated = useAppSettingsStore((state) => state.isHydrated);
+  const isSettingsHydrated = useAppSettingsStore((state) => state.isHydrated);
+  const isProfileHydrated = useProfileStore((state) => state.isHydrated);
   const languagePreference = useAppSettingsStore((state) => state.languagePreference);
   const hydrateSettings = useAppSettingsStore((state) => state.hydrateSettings);
 
   useEffect(() => {
-    async function bootstrapSettings() {
+    async function bootstrapApp() {
       try {
         await initializeSettingsStorage();
         const settings = await loadSettings();
@@ -33,31 +36,35 @@ export default function RootLayout() {
         hydrateSettings(settings);
         await i18n.changeLanguage(settings.languagePreference);
       } catch (error) {
-        const fallbackSettings = {
-          themePreference: 'light' as const,
+        const fallbackSettings: AppSettings = {
+          themePreference: 'light',
           languagePreference: resolveAppLanguage(i18n.language),
         };
 
         hydrateSettings(fallbackSettings);
         await i18n.changeLanguage(fallbackSettings.languagePreference);
         console.error('Failed to initialize app settings.', error);
+      }
+
+      try {
+        await hydrateProfileState();
       } finally {
         await SplashScreen.hideAsync();
       }
     }
 
-    void bootstrapSettings();
+    void bootstrapApp();
   }, [hydrateSettings]);
 
   useEffect(() => {
-    if (!isHydrated || i18n.language === languagePreference) {
+    if (!isSettingsHydrated || i18n.language === languagePreference) {
       return;
     }
 
     void i18n.changeLanguage(languagePreference);
-  }, [isHydrated, languagePreference]);
+  }, [isSettingsHydrated, languagePreference]);
 
-  if (!isHydrated) {
+  if (!isSettingsHydrated || !isProfileHydrated) {
     return null;
   }
 

@@ -18,6 +18,11 @@ export type NewWeightHistoryEntry = {
   measuredAt: string;
 };
 
+export type ProfileStateHydrationPayload = {
+  profileDetails: ProfileDetails;
+  weightHistoryEntries: WeightHistoryEntry[];
+};
+
 export const emptyProfileDetails: ProfileDetails = {
   avatarUri: null,
   name: '',
