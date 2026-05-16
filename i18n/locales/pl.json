@@ -17,18 +17,79 @@
     },
     "profile": {
       "title": "Profil",
-      "description": "Dostosuj wyglad aplikacji i jezyk.",
+      "description": "Zarządzaj danymi profilu, historią wagi, wyglądem aplikacji i językiem.",
       "sections": {
-        "appearance": "Wyglad",
-        "language": "Jezyk"
+        "profileDetails": "Dane Profilu",
+        "avatar": "Awatar",
+        "weight": "Waga",
+        "appearance": "Wygląd",
+        "language": "Język"
+      },
+      "fields": {
+        "name": "Imię",
+        "gender": "Płeć",
+        "height": "Wzrost",
+        "currentWeight": "Aktualna Waga",
+        "measurementDate": "Data Pomiaru"
+      },
+      "gender": {
+        "male": "Mężczyzna",
+        "female": "Kobieta"
+      },
+      "units": {
+        "centimeters": "cm",
+        "kilograms": "kg"
+      },
+      "avatar": {
+        "title": "Zdjęcie Profilowe",
+        "description": "Wybierz zdjęcie profilowe, aby spersonalizować konto.",
+        "placeholder": "Nie wybrano zdjęcia profilowego.",
+        "changeAction": "Zmień Zdjęcie",
+        "removeAction": "Usuń Zdjęcie",
+        "chooseAction": "Wybierz Zdjęcie",
+        "galleryAction": "Wybierz z Galerii",
+        "cancelAction": "Anuluj",
+        "defaultAlt": "Domyślny awatar profilu"
+      },
+      "form": {
+        "saveAction": "Zapisz",
+        "editAction": "Edytuj",
+        "cancelAction": "Anuluj"
+      },
+      "weightHistory": {
+        "title": "Historia Wagi",
+        "description": "Przeglądaj i aktualizuj zapisane pomiary wagi.",
+        "empty": "Brak zapisanych pomiarów wagi.",
+        "addAction": "Dodaj Pomiar Wagi",
+        "editAction": "Edytuj Pomiar",
+        "deleteAction": "Usuń Pomiar",
+        "saveAction": "Zapisz Pomiar",
+        "cancelAction": "Anuluj"
+      },
+      "chart": {
+        "title": "Wykres Wagi",
+        "empty": "Dodaj pomiary wagi, aby zobaczyć wykres.",
+        "xAxis": "Data Pomiaru",
+        "yAxis": "Waga",
+        "latestPoint": "Najnowsza Waga",
+        "weightSeries": "Historia Wagi"
+      },
+      "validation": {
+        "nameRequired": "Wpisz swoje imię.",
+        "heightRequired": "Podaj swój wzrost.",
+        "heightInvalid": "Podaj prawidłowy wzrost w centymetrach.",
+        "weightRequired": "Podaj swoją wagę.",
+        "weightInvalid": "Podaj prawidłową wagę w kilogramach.",
+        "measurementDateRequired": "Wybierz datę pomiaru.",
+        "measurementDateInvalid": "Wybierz prawidłową datę pomiaru."
       },
       "theme": {
-        "description": "Wybierz sposob wyswietlania aplikacji.",
+        "description": "Wybierz sposób wyświetlania aplikacji.",
         "light": "Jasny",
         "dark": "Ciemny"
       },
       "language": {
-        "description": "Wybierz jezyk uzywany w aplikacji.",
+        "description": "Wybierz język używany w aplikacji.",
         "en": "English",
         "pl": "Polski"
       }

@@ -17,10 +17,71 @@
     },
     "profile": {
       "title": "Profile",
-      "description": "Adjust the app appearance and language.",
+      "description": "Manage your profile details, weight tracking, appearance, and language.",
       "sections": {
+        "profileDetails": "Profile Details",
+        "avatar": "Avatar",
+        "weight": "Weight",
         "appearance": "Appearance",
         "language": "Language"
+      },
+      "fields": {
+        "name": "Name",
+        "gender": "Gender",
+        "height": "Height",
+        "currentWeight": "Current Weight",
+        "measurementDate": "Measurement Date"
+      },
+      "gender": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "units": {
+        "centimeters": "cm",
+        "kilograms": "kg"
+      },
+      "avatar": {
+        "title": "Profile Photo",
+        "description": "Choose a profile photo to personalize your account.",
+        "placeholder": "No profile photo selected.",
+        "changeAction": "Change Photo",
+        "removeAction": "Remove Photo",
+        "chooseAction": "Choose Photo",
+        "galleryAction": "Choose from Gallery",
+        "cancelAction": "Cancel",
+        "defaultAlt": "Default profile avatar"
+      },
+      "form": {
+        "saveAction": "Save",
+        "editAction": "Edit",
+        "cancelAction": "Cancel"
+      },
+      "weightHistory": {
+        "title": "Weight History",
+        "description": "Review and update your saved weight entries.",
+        "empty": "No weight entries yet.",
+        "addAction": "Add Weight Entry",
+        "editAction": "Edit Entry",
+        "deleteAction": "Delete Entry",
+        "saveAction": "Save Entry",
+        "cancelAction": "Cancel"
+      },
+      "chart": {
+        "title": "Weight Chart",
+        "empty": "Add weight entries to see your chart.",
+        "xAxis": "Measurement Date",
+        "yAxis": "Weight",
+        "latestPoint": "Latest Weight",
+        "weightSeries": "Weight History"
+      },
+      "validation": {
+        "nameRequired": "Enter your name.",
+        "heightRequired": "Enter your height.",
+        "heightInvalid": "Enter a valid height in centimeters.",
+        "weightRequired": "Enter your weight.",
+        "weightInvalid": "Enter a valid weight in kilograms.",
+        "measurementDateRequired": "Select a measurement date.",
+        "measurementDateInvalid": "Select a valid measurement date."
       },
       "theme": {
         "description": "Choose how the app should look.",
