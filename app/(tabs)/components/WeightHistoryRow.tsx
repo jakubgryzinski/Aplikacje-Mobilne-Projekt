@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { ThemedText } from '@/components/themed-text';
+import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 import type { WeightHistoryEntry } from '@/store/profile-types';
 
-import { ProfileActionButton } from './profile-action-button';
+import { ProfileActionButton } from './ProfileActionButton';
 import {
   formatDateInputFromIso,
   formatMeasurementDateForDisplay,
   parseMeasurementDateInput,
   parsePositiveNumberInput,
 } from './profile-form-utils';
-import { ProfileNumberField } from './profile-number-field';
-import { ProfileTextField } from './profile-text-field';
+import { ProfileNumberField } from './ProfileNumberField';
+import { ProfileTextField } from './ProfileTextField';
 
 type WeightHistoryRowProps = {
   entry: WeightHistoryEntry;
@@ -62,7 +62,7 @@ export function WeightHistoryRow({
     }
   }, [entry, isEditing]);
 
-  async function saveRow() {
+  const saveRow = async () => {
     if (isSubmitting) {
       return;
     }
@@ -104,7 +104,7 @@ export function WeightHistoryRow({
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <View

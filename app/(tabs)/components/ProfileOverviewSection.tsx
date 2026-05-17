@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
-import { ProfileAvatarSection } from './profile-avatar-section';
-import { ProfileDetailsForm } from './profile-details-form';
+import { ProfileAvatarSection } from './ProfileAvatarSection';
+import { ProfileDetailsForm } from './ProfileDetailsForm';
 
 export function ProfileOverviewSection() {
   return (

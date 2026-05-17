@@ -28,7 +28,7 @@ export default function RootLayout() {
   const hydrateSettings = useAppSettingsStore((state) => state.hydrateSettings);
 
   useEffect(() => {
-    async function bootstrapApp() {
+    const bootstrapApp = async () => {
       try {
         await initializeSettingsStorage();
         const settings = await loadSettings();
@@ -51,7 +51,7 @@ export default function RootLayout() {
       } finally {
         await SplashScreen.hideAsync();
       }
-    }
+    };
 
     void bootstrapApp();
   }, [hydrateSettings]);

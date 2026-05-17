@@ -34,17 +34,18 @@ export type WeightChartModel = {
   points: WeightChartPoint[];
 };
 
-export function buildWeightChartModel({
-  chartHeight,
-  chartWidth,
-  entries,
-  guideLineCount,
-  locale,
-  plotBottom,
-  plotLeft,
-  plotRight,
-  plotTop,
-}: BuildWeightChartModelParams): WeightChartModel {
+export const buildWeightChartModel = (params: BuildWeightChartModelParams) => {
+  const {
+    chartHeight,
+    chartWidth,
+    entries,
+    guideLineCount,
+    locale,
+    plotBottom,
+    plotLeft,
+    plotRight,
+    plotTop,
+  } = params;
   const chronologicalEntries = sortWeightHistoryEntriesChronologically(entries);
 
   if (chronologicalEntries.length === 0) {
@@ -98,11 +99,11 @@ export function buildWeightChartModel({
     linePath: buildLinePath(points),
     points,
   };
-}
+};
 
-export function sortWeightHistoryEntriesChronologically(
+export const sortWeightHistoryEntriesChronologically = (
   entries: WeightHistoryEntry[]
-): WeightHistoryEntry[] {
+) => {
   return [...entries].sort((leftEntry, rightEntry) => {
     const measuredAtDifference =
       new Date(leftEntry.measuredAt).getTime() - new Date(rightEntry.measuredAt).getTime();
@@ -113,9 +114,9 @@ export function sortWeightHistoryEntriesChronologically(
 
     return leftEntry.id - rightEntry.id;
   });
-}
+};
 
-function buildLinePath(points: WeightChartPoint[]): string {
+const buildLinePath = (points: WeightChartPoint[]) => {
   if (points.length < 2) {
     return '';
   }
@@ -123,23 +124,25 @@ function buildLinePath(points: WeightChartPoint[]): string {
   return points
     .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`)
     .join(' ');
-}
+};
 
-function createGuideLines({
-  formatter,
-  guideLineCount,
-  maxWeight,
-  minWeight,
-  plotHeight,
-  plotTop,
-}: {
+const createGuideLines = (params: {
   formatter: Intl.NumberFormat;
   guideLineCount: number;
   maxWeight: number;
   minWeight: number;
   plotHeight: number;
   plotTop: number;
-}): WeightChartGuideLine[] {
+}) => {
+  const {
+    formatter,
+    guideLineCount,
+    maxWeight,
+    minWeight,
+    plotHeight,
+    plotTop,
+  } = params;
+
   if (guideLineCount < 2) {
     return [];
   }
@@ -153,12 +156,9 @@ function createGuideLines({
       y: plotTop + plotHeight * ratio,
     };
   });
-}
+};
 
-function getWeightDomain(entries: WeightHistoryEntry[]): {
-  max: number;
-  min: number;
-} {
+const getWeightDomain = (entries: WeightHistoryEntry[]) => {
   const rawMin = Math.min(...entries.map((entry) => entry.weightKilograms));
   const rawMax = Math.max(...entries.map((entry) => entry.weightKilograms));
 
@@ -178,9 +178,9 @@ function getWeightDomain(entries: WeightHistoryEntry[]): {
     max: rawMax + padding,
     min: Math.max(rawMin - padding, 0),
   };
-}
+};
 
-function shouldShowDateLabel(index: number, entryCount: number): boolean {
+const shouldShowDateLabel = (index: number, entryCount: number) => {
   if (entryCount <= 4) {
     return true;
   }
@@ -192,4 +192,4 @@ function shouldShowDateLabel(index: number, entryCount: number): boolean {
   const labelStep = Math.ceil(entryCount / 4);
 
   return index % labelStep === 0;
-}
+};

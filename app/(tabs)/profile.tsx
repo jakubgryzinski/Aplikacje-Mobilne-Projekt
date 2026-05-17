@@ -2,10 +2,10 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { ProfileOverviewSection } from './components/profile-overview-section';
-import { WeightHistorySection } from './components/weight-history-section';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import { ProfileOverviewSection } from './components/ProfileOverviewSection';
+import { WeightHistorySection } from './components/WeightHistorySection';
 
 export default function ProfileScreen() {
   const { t } = useTranslation();

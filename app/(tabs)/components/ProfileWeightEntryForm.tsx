@@ -3,15 +3,15 @@ import { StyleSheet, View } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 import { createProfileWeightEntry } from '@/store/profile-actions';
 
-import { ProfileActionButton } from './profile-action-button';
-import { ProfileNumberField } from './profile-number-field';
-import { ProfileTextField } from './profile-text-field';
+import { ProfileActionButton } from './ProfileActionButton';
+import { ProfileNumberField } from './ProfileNumberField';
+import { ProfileTextField } from './ProfileTextField';
 import {
   getDefaultProfileWeightEntryFormValues,
   getProfileWeightEntryFromFormValues,

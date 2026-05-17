@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { CenteredTabHeader } from './components/centered-tab-header';
+import { CenteredTabHeader } from './components/CenteredTabHeader';
 
 export default function NewTrainingScreen() {
   const { t } = useTranslation();

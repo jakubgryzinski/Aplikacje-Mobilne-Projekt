@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, View, type KeyboardTypeOptions } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
+import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 

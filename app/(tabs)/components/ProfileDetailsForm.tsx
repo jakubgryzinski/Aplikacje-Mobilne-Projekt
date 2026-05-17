@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { ThemedText } from '@/components/themed-text';
+import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 import { updateLanguagePreference, updateThemePreference } from '@/store/app-settings-actions';
@@ -11,16 +11,16 @@ import { useAppSettingsStore } from '@/store/app-settings';
 import { saveProfileIdentity } from '@/store/profile-actions';
 import { useProfileStore } from '@/store/profile-store';
 
-import { OptionToggleGroup } from './option-toggle-group';
-import { ProfileActionButton } from './profile-action-button';
+import { OptionToggleGroup } from './OptionToggleGroup';
+import { ProfileActionButton } from './ProfileActionButton';
 import {
   getProfileDetailsFormValues,
   getProfileDetailsFromFormValues,
   type ProfileDetailsFormValues,
   profileDetailsFormSchema,
 } from './profile-details-form.schema';
-import { ProfileNumberField } from './profile-number-field';
-import { ProfileTextField } from './profile-text-field';
+import { ProfileNumberField } from './ProfileNumberField';
+import { ProfileTextField } from './ProfileTextField';
 import { createZodFormResolver } from './zod-form-resolver';
 
 export function ProfileDetailsForm() {
@@ -51,17 +51,17 @@ export function ProfileDetailsForm() {
     setFormError(undefined);
   }, [isEditing, profileDetails, reset]);
 
-  function startEditing() {
+  const startEditing = () => {
     reset(getProfileDetailsFormValues(profileDetails));
     setFormError(undefined);
     setIsEditing(true);
-  }
+  };
 
-  function cancelEditing() {
+  const cancelEditing = () => {
     reset(getProfileDetailsFormValues(profileDetails));
     setFormError(undefined);
     setIsEditing(false);
-  }
+  };
 
   const onSave = handleSubmit(async (formValues) => {
     try {

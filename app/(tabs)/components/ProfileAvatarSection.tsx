@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
@@ -15,7 +15,7 @@ import {
 } from '@/store/profile-actions';
 import { useProfileStore } from '@/store/profile-store';
 
-import { ProfileAvatarActionSheet } from './profile-avatar-action-sheet';
+import { ProfileAvatarActionSheet } from './ProfileAvatarActionSheet';
 
 export function ProfileAvatarSection() {
   const { t } = useTranslation();
@@ -30,34 +30,15 @@ export function ProfileAvatarSection() {
     ? t('tabScreens.profile.avatar.changeAction')
     : t('tabScreens.profile.avatar.chooseAction');
 
-  const sheetActions = [
-    {
-      label: t('tabScreens.profile.avatar.changeAction'),
-      onPress: () => {
-        void onChooseAvatar();
-      },
-    },
-    {
-      label: t('tabScreens.profile.avatar.removeAction'),
-      onPress: () => {
-        void onRemoveAvatar();
-      },
-    },
-    {
-      label: t('tabScreens.profile.avatar.cancelAction'),
-      onPress: closeActionSheet,
-    },
-  ];
-
-  function closeActionSheet() {
+  const closeActionSheet = () => {
     if (isSubmitting) {
       return;
     }
 
     setIsActionSheetVisible(false);
-  }
+  };
 
-  async function onChooseAvatar() {
+  const onChooseAvatar = async () => {
     setIsSubmitting(true);
     setErrorMessage(null);
 
@@ -87,9 +68,28 @@ export function ProfileAvatarSection() {
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
-  async function onRemoveAvatar() {
+  const sheetActions = [
+    {
+      label: t('tabScreens.profile.avatar.changeAction'),
+      onPress: () => {
+        void onChooseAvatar();
+      },
+    },
+    {
+      label: t('tabScreens.profile.avatar.removeAction'),
+      onPress: () => {
+        void onRemoveAvatar();
+      },
+    },
+    {
+      label: t('tabScreens.profile.avatar.cancelAction'),
+      onPress: closeActionSheet,
+    },
+  ];
+
+  const onRemoveAvatar = async () => {
     setIsSubmitting(true);
     setErrorMessage(null);
 
@@ -101,7 +101,7 @@ export function ProfileAvatarSection() {
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <View style={styles.section}>

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { DeleteDialog } from '@/components/delete-dialog';
-import { ThemedText } from '@/components/themed-text';
+import { DeleteDialog } from '@/components/DeleteDialog';
+import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 import { useAppSettingsStore } from '@/store/app-settings';
@@ -13,13 +13,12 @@ import {
 } from '@/store/profile-actions';
 import { useProfileStore } from '@/store/profile-store';
 
-import { ProfileWeightChart } from './profile-weight-chart';
-import { ProfileWeightEntryForm } from './profile-weight-entry-form';
-import { WeightHistoryRow } from './weight-history-row';
+import { ProfileWeightChart } from './ProfileWeightChart';
+import { ProfileWeightEntryForm } from './ProfileWeightEntryForm';
+import { WeightHistoryRow } from './WeightHistoryRow';
 
-function getLocale(languagePreference: 'en' | 'pl'): string {
-  return languagePreference === 'pl' ? 'pl-PL' : 'en-US';
-}
+const getLocale = (languagePreference: 'en' | 'pl'): string =>
+  languagePreference === 'pl' ? 'pl-PL' : 'en-US';
 
 export function WeightHistorySection() {
   const { t } = useTranslation();
@@ -34,7 +33,7 @@ export function WeightHistorySection() {
   const locale = getLocale(languagePreference);
   const isDeleteDialogOpen = deleteEntryId !== null;
 
-  async function submitDelete() {
+  const submitDelete = async () => {
     if (deleteEntryId === null || isDeletingEntry) {
       return;
     }
@@ -55,7 +54,7 @@ export function WeightHistorySection() {
     } finally {
       setIsDeletingEntry(false);
     }
-  }
+  };
 
   return (
     <View style={styles.section}>

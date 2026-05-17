@@ -1,10 +1,10 @@
 import { Modal, Pressable, StyleSheet } from 'react-native';
 
-import { ThemedView } from '@/components/themed-view';
+import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 
-import { ProfileActionButton } from './profile-action-button';
+import { ProfileActionButton } from './ProfileActionButton';
 
 type ProfileAvatarActionSheetAction = {
   label: string;

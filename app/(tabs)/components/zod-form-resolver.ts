@@ -1,11 +1,11 @@
 import type { FieldError, FieldErrors, FieldValues, Resolver } from 'react-hook-form';
 import type { ZodType } from 'zod';
 
-function setErrorAtPath(
+const setErrorAtPath = (
   fieldErrors: Record<string, unknown>,
   path: (string | number)[],
   fieldError: FieldError
-) {
+) => {
   if (path.length === 0) {
     return;
   }
@@ -25,11 +25,11 @@ function setErrorAtPath(
 
   fieldErrors[pathKey] = nestedErrors;
   setErrorAtPath(nestedErrors, remainingPath, fieldError);
-}
+};
 
-export function createZodFormResolver<TFieldValues extends FieldValues>(
+export const createZodFormResolver = <TFieldValues extends FieldValues>(
   schema: ZodType<TFieldValues>
-): Resolver<TFieldValues> {
+): Resolver<TFieldValues> => {
   return async (formValues) => {
     const parseResult = await schema.safeParseAsync(formValues);
 
@@ -62,4 +62,4 @@ export function createZodFormResolver<TFieldValues extends FieldValues>(
       values: {},
     } as const;
   };
-}
+};

@@ -3,7 +3,7 @@ import { LayoutChangeEvent, ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 
-import { ThemedText } from '@/components/themed-text';
+import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 import { useAppSettingsStore } from '@/store/app-settings';
@@ -20,9 +20,8 @@ const POINT_SPACING = 64;
 const RIGHT_PADDING = 16;
 const TOP_PADDING = 20;
 
-function getLocale(languagePreference: 'en' | 'pl'): string {
-  return languagePreference === 'pl' ? 'pl-PL' : 'en-US';
-}
+const getLocale = (languagePreference: 'en' | 'pl'): string =>
+  languagePreference === 'pl' ? 'pl-PL' : 'en-US';
 
 export function ProfileWeightChart() {
   const { t } = useTranslation();
@@ -60,13 +59,13 @@ export function ProfileWeightChart() {
     ? `${t('tabs.profile.weight.chart.title')}. ${t('tabs.profile.weight.chart.weightSeries')}. ${weightHistoryEntries.length}. ${t('tabs.profile.weight.chart.latestPoint')}: ${latestPointSummary}.`
     : `${t('tabs.profile.weight.chart.title')}. ${t('tabs.profile.weight.chart.weightSeries')}. ${weightHistoryEntries.length}.`;
 
-  function updateViewportWidth(event: LayoutChangeEvent) {
+  const updateViewportWidth = (event: LayoutChangeEvent) => {
     setViewportWidth((currentWidth) => {
       const nextWidth = Math.round(event.nativeEvent.layout.width);
 
       return currentWidth === nextWidth ? currentWidth : nextWidth;
     });
-  }
+  };
 
   return (
     <View

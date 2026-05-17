@@ -17,22 +17,18 @@ const SETTINGS_TABLE_SQL = `
 const THEME_KEY = 'themePreference';
 const LANGUAGE_KEY = 'languagePreference';
 
-function getDefaultSettings(): AppSettings {
-  return {
-    themePreference: 'light',
-    languagePreference: resolveAppLanguage(Intl.DateTimeFormat().resolvedOptions().locale),
-  };
-}
+const getDefaultSettings = (): AppSettings => ({
+  themePreference: 'light',
+  languagePreference: resolveAppLanguage(Intl.DateTimeFormat().resolvedOptions().locale),
+});
 
-function isThemePreference(value: string): value is ThemePreference {
-  return value === 'light' || value === 'dark';
-}
+const isThemePreference = (value: string): value is ThemePreference =>
+  value === 'light' || value === 'dark';
 
-function isAppLanguage(value: string): value is AppLanguage {
-  return value === 'en' || value === 'pl';
-}
+const isAppLanguage = (value: string): value is AppLanguage =>
+  value === 'en' || value === 'pl';
 
-function normalizeSettings(rows: RawSettingRow[]): AppSettings {
+const normalizeSettings = (rows: RawSettingRow[]): AppSettings => {
   const defaults = getDefaultSettings();
   const themeValue = rows.find((row) => row.key === THEME_KEY)?.value;
   const languageValue = rows.find((row) => row.key === LANGUAGE_KEY)?.value;
@@ -42,7 +38,7 @@ function normalizeSettings(rows: RawSettingRow[]): AppSettings {
     languagePreference:
       languageValue && isAppLanguage(languageValue) ? languageValue : defaults.languagePreference,
   };
-}
+};
 
 export async function initializeSettingsStorage() {
   const database = await getDatabase();
