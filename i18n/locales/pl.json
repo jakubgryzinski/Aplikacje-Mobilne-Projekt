@@ -1,9 +1,57 @@
 {
   "tabs": {
-    "trainingHistory": "Historia Treningów",
-    "statistics": "Statystyki",
-    "newTraining": "Nowy Trening",
-    "profile": "Profil"
+    "trainingHistory": {
+      "label": "Historia Treningów"
+    },
+    "statistics": {
+      "label": "Statystyki"
+    },
+    "newTraining": {
+      "label": "Nowy Trening"
+    },
+    "profile": {
+      "label": "Profil",
+      "weight": {
+        "measurementDate": {
+          "label": "Data Pomiaru",
+          "placeholder": "RRRR-MM-DD",
+          "required": "Wybierz datę pomiaru.",
+          "invalid": "Wybierz prawidłową datę pomiaru."
+        },
+        "value": {
+          "label": "Aktualna Waga",
+          "placeholder": "Podaj swoją aktualną wagę",
+          "required": "Podaj swoją wagę.",
+          "invalid": "Podaj prawidłową wagę w kilogramach."
+        },
+        "unit": "kg",
+        "entry": {
+          "title": "Dodaj Pomiar Wagi",
+          "submit": "Zapisz Pomiar Wagi",
+          "saveError": "Nie udało się teraz zapisać pomiaru wagi."
+        },
+        "history": {
+          "title": "Historia Wagi",
+          "description": "Przeglądaj i aktualizuj zapisane pomiary wagi.",
+          "empty": "Brak zapisanych pomiarów wagi.",
+          "addAction": "Dodaj Pomiar Wagi",
+          "editAction": "Edytuj Pomiar",
+          "deleteAction": "Usuń Pomiar",
+          "saveAction": "Zapisz Pomiar",
+          "cancelAction": "Anuluj",
+          "updateError": "Nie udało się teraz zaktualizować tego pomiaru wagi.",
+          "deleteError": "Nie udało się teraz usunąć tego pomiaru wagi."
+        },
+        "chart": {
+          "title": "Wykres Wagi",
+          "empty": "Dodaj pomiary wagi, aby zobaczyć wykres.",
+          "xAxis": "Data Pomiaru",
+          "yAxis": "Waga",
+          "latestPoint": "Najnowsza Waga",
+          "weightSeries": "Historia Wagi"
+        }
+      }
+    }
   },
   "tabScreens": {
     "trainingHistory": {
@@ -40,15 +88,11 @@
       "fields": {
         "name": "Imię",
         "gender": "Płeć",
-        "height": "Wzrost",
-        "currentWeight": "Aktualna Waga",
-        "measurementDate": "Data Pomiaru"
+        "height": "Wzrost"
       },
       "placeholders": {
         "name": "Wpisz swoje imię",
-        "height": "Podaj swój wzrost",
-        "measurementDate": "RRRR-MM-DD",
-        "currentWeight": "Podaj swoją aktualną wagę"
+        "height": "Podaj swój wzrost"
       },
       "gender": {
         "male": "Mężczyzna",
@@ -79,39 +123,10 @@
         "readOnlyHint": "Wybierz Edytuj, aby zmienić dane profilu.",
         "saveError": "Nie udało się teraz zapisać zmian profilu."
       },
-      "weightEntry": {
-        "title": "Dodaj Pomiar Wagi",
-        "saveAction": "Zapisz Pomiar Wagi",
-        "saveError": "Nie udało się teraz zapisać pomiaru wagi."
-      },
-      "weightHistory": {
-        "title": "Historia Wagi",
-        "description": "Przeglądaj i aktualizuj zapisane pomiary wagi.",
-        "empty": "Brak zapisanych pomiarów wagi.",
-        "addAction": "Dodaj Pomiar Wagi",
-        "editAction": "Edytuj Pomiar",
-        "deleteAction": "Usuń Pomiar",
-        "saveAction": "Zapisz Pomiar",
-        "cancelAction": "Anuluj",
-        "updateError": "Nie udało się teraz zaktualizować tego pomiaru wagi.",
-        "deleteError": "Nie udało się teraz usunąć tego pomiaru wagi."
-      },
-      "chart": {
-        "title": "Wykres Wagi",
-        "empty": "Dodaj pomiary wagi, aby zobaczyć wykres.",
-        "xAxis": "Data Pomiaru",
-        "yAxis": "Waga",
-        "latestPoint": "Najnowsza Waga",
-        "weightSeries": "Historia Wagi"
-      },
       "validation": {
         "nameRequired": "Wpisz swoje imię.",
         "heightRequired": "Podaj swój wzrost.",
-        "heightInvalid": "Podaj prawidłowy wzrost w centymetrach.",
-        "weightRequired": "Podaj swoją wagę.",
-        "weightInvalid": "Podaj prawidłową wagę w kilogramach.",
-        "measurementDateRequired": "Wybierz datę pomiaru.",
-        "measurementDateInvalid": "Wybierz prawidłową datę pomiaru."
+        "heightInvalid": "Podaj prawidłowy wzrost w centymetrach."
       },
       "theme": {
         "description": "Wybierz sposób wyświetlania aplikacji.",

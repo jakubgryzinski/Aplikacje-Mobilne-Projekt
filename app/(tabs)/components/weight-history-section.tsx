@@ -31,7 +31,7 @@ export function WeightHistorySection() {
       <ProfileWeightChart />
 
       {weightHistoryEntries.length === 0 ? (
-        <ThemedText>{t('tabScreens.profile.weightHistory.empty')}</ThemedText>
+        <ThemedText>{t('tabs.profile.weight.history.empty')}</ThemedText>
       ) : (
         <View style={styles.list}>
           {weightHistoryEntries.map((weightHistoryEntry) => (

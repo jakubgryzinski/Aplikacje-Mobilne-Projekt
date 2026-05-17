@@ -1,174 +1,128 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { ThemedText } from '@/components/themed-text';
+import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 import { updateLanguagePreference, updateThemePreference } from '@/store/app-settings-actions';
 import { useAppSettingsStore } from '@/store/app-settings';
 import { saveProfileIdentity } from '@/store/profile-actions';
 import { useProfileStore } from '@/store/profile-store';
-import type { ProfileDetails, ProfileGender } from '@/store/profile-types';
 
 import { OptionToggleGroup } from './option-toggle-group';
 import { ProfileActionButton } from './profile-action-button';
-import { formatOptionalNumber, parsePositiveNumberInput } from './profile-form-utils';
+import {
+  getProfileDetailsFormValues,
+  getProfileDetailsFromFormValues,
+  type ProfileDetailsFormValues,
+  profileDetailsFormSchema,
+} from './profile-details-form.schema';
 import { ProfileNumberField } from './profile-number-field';
 import { ProfileTextField } from './profile-text-field';
-
-type ValidationState = {
-  form?: string;
-  height?: string;
-  name?: string;
-};
-
-const errorTextColor = {
-  dark: '#FF8A80',
-  light: '#C62828',
-} as const;
+import { createZodFormResolver } from './zod-form-resolver';
 
 export function ProfileDetailsForm() {
   const { t } = useTranslation();
   const theme = useAppTheme();
+  const palette = Colors[theme];
   const languagePreference = useAppSettingsStore((state) => state.languagePreference);
   const profileDetails = useProfileStore((state) => state.profileDetails);
   const themePreference = useAppSettingsStore((state) => state.themePreference);
   const [isEditing, setIsEditing] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [nameInput, setNameInput] = useState(profileDetails.name);
-  const [draftGender, setDraftGender] = useState<ProfileGender | null>(profileDetails.gender);
-  const [heightInput, setHeightInput] = useState(
-    formatOptionalNumber(profileDetails.heightCentimeters)
-  );
-  const [validationState, setValidationState] = useState<ValidationState>({});
+  const [formError, setFormError] = useState<string | undefined>();
+  const {
+    control,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    reset,
+  } = useForm<ProfileDetailsFormValues>({
+    defaultValues: getProfileDetailsFormValues(profileDetails),
+    resolver: createZodFormResolver(profileDetailsFormSchema),
+  });
 
   useEffect(() => {
     if (isEditing) {
       return;
     }
 
-    setNameInput(profileDetails.name);
-    setDraftGender(profileDetails.gender);
-    setHeightInput(formatOptionalNumber(profileDetails.heightCentimeters));
-    setValidationState({});
-  }, [isEditing, profileDetails]);
+    reset(getProfileDetailsFormValues(profileDetails));
+    setFormError(undefined);
+  }, [isEditing, profileDetails, reset]);
 
   function startEditing() {
-    setNameInput(profileDetails.name);
-    setDraftGender(profileDetails.gender);
-    setHeightInput(formatOptionalNumber(profileDetails.heightCentimeters));
-    setValidationState({});
+    reset(getProfileDetailsFormValues(profileDetails));
+    setFormError(undefined);
     setIsEditing(true);
   }
 
   function cancelEditing() {
-    setNameInput(profileDetails.name);
-    setDraftGender(profileDetails.gender);
-    setHeightInput(formatOptionalNumber(profileDetails.heightCentimeters));
-    setValidationState({});
+    reset(getProfileDetailsFormValues(profileDetails));
+    setFormError(undefined);
     setIsEditing(false);
   }
 
-  function updateValidationState(partialState: ValidationState) {
-    setValidationState((currentState) => ({
-      ...currentState,
-      ...partialState,
-    }));
-  }
-
-  function onNameChange(value: string) {
-    setNameInput(value);
-
-    if (validationState.name || validationState.form) {
-      updateValidationState({
-        form: undefined,
-        name: undefined,
-      });
-    }
-  }
-
-  function onHeightChange(value: string) {
-    setHeightInput(value);
-
-    if (validationState.height || validationState.form) {
-      updateValidationState({
-        form: undefined,
-        height: undefined,
-      });
-    }
-  }
-
-  async function onSave() {
-    if (isSubmitting) {
-      return;
-    }
-
-    const nextValidationState: ValidationState = {};
-    const trimmedName = nameInput.trim();
-    const parsedHeightCentimeters = parsePositiveNumberInput(heightInput);
-
-    if (trimmedName.length === 0) {
-      nextValidationState.name = t('tabScreens.profile.validation.nameRequired');
-    }
-
-    if (parsedHeightCentimeters === null) {
-      nextValidationState.height = t('tabScreens.profile.validation.heightRequired');
-    } else if (parsedHeightCentimeters === undefined) {
-      nextValidationState.height = t('tabScreens.profile.validation.heightInvalid');
-    }
-
-    if (Object.keys(nextValidationState).length > 0) {
-      setValidationState(nextValidationState);
-      return;
-    }
-
-    const nextProfileDetails: ProfileDetails = {
-      avatarUri: profileDetails.avatarUri,
-      name: trimmedName,
-      gender: draftGender,
-      heightCentimeters: parsedHeightCentimeters ?? null,
-    };
-
-    setIsSubmitting(true);
-    setValidationState({});
-
+  const onSave = handleSubmit(async (formValues) => {
     try {
-      await saveProfileIdentity(nextProfileDetails);
+      setFormError(undefined);
+      await saveProfileIdentity(
+        getProfileDetailsFromFormValues(formValues, profileDetails.avatarUri)
+      );
       setIsEditing(false);
     } catch {
-      setValidationState({
-        form: t('tabScreens.profile.form.saveError'),
-      });
-    } finally {
-      setIsSubmitting(false);
+      setFormError(t('tabScreens.profile.form.saveError'));
     }
-  }
+  });
 
   return (
     <View style={styles.form}>
-      <ProfileTextField
-        accessibilityLabel={t('tabScreens.profile.fields.name')}
-        editable={isEditing}
-        label={t('tabScreens.profile.fields.name')}
-        onChangeText={onNameChange}
-        placeholder={t('tabScreens.profile.placeholders.name')}
-        value={nameInput}
+      <Controller
+        control={control}
+        name="name"
+        render={({ field }) => (
+          <ProfileTextField
+            accessibilityLabel={t('tabScreens.profile.fields.name')}
+            editable={isEditing}
+            errorMessage={errors.name?.message ? t(errors.name.message) : undefined}
+            label={t('tabScreens.profile.fields.name')}
+            onBlur={field.onBlur}
+            onChangeText={(textValue) => {
+              if (formError) {
+                setFormError(undefined);
+              }
+
+              field.onChange(textValue);
+            }}
+            placeholder={t('tabScreens.profile.placeholders.name')}
+            value={field.value}
+          />
+        )}
       />
-      {validationState.name ? (
-        <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.name}</ThemedText>
-      ) : null}
 
       <View style={styles.field}>
         <ThemedText type="defaultSemiBold">{t('tabScreens.profile.fields.gender')}</ThemedText>
-        <OptionToggleGroup
-          accessibilityLabel={t('tabScreens.profile.fields.gender')}
-          disabled={!isEditing || isSubmitting}
-          onChange={setDraftGender}
-          options={[
-            { label: t('tabScreens.profile.gender.male'), value: 'male' },
-            { label: t('tabScreens.profile.gender.female'), value: 'female' },
-          ]}
-          selectedValue={draftGender}
+        <Controller
+          control={control}
+          name="gender"
+          render={({ field }) => (
+            <OptionToggleGroup
+              accessibilityLabel={t('tabScreens.profile.fields.gender')}
+              disabled={!isEditing || isSubmitting}
+              onChange={(gender) => {
+                if (formError) {
+                  setFormError(undefined);
+                }
+
+                field.onChange(gender);
+              }}
+              options={[
+                { label: t('tabScreens.profile.gender.male'), value: 'male' },
+                { label: t('tabScreens.profile.gender.female'), value: 'female' },
+              ]}
+              selectedValue={field.value}
+            />
+          )}
         />
       </View>
 
@@ -206,21 +160,32 @@ export function ProfileDetailsForm() {
         />
       </View>
 
-      <ProfileNumberField
-        accessibilityLabel={t('tabScreens.profile.fields.height')}
-        editable={isEditing}
-        label={t('tabScreens.profile.fields.height')}
-        onChangeText={onHeightChange}
-        placeholder={t('tabScreens.profile.placeholders.height')}
-        unitLabel={t('tabScreens.profile.units.centimeters')}
-        value={heightInput}
-      />
-      {validationState.height ? (
-        <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.height}</ThemedText>
-      ) : null}
+      <Controller
+        control={control}
+        name="height"
+        render={({ field }) => (
+          <ProfileNumberField
+            accessibilityLabel={t('tabScreens.profile.fields.height')}
+            editable={isEditing}
+            errorMessage={errors.height?.message ? t(errors.height.message) : undefined}
+            label={t('tabScreens.profile.fields.height')}
+            onBlur={field.onBlur}
+            onChangeText={(textValue) => {
+              if (formError) {
+                setFormError(undefined);
+              }
 
-      {validationState.form ? (
-        <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.form}</ThemedText>
+              field.onChange(textValue);
+            }}
+            placeholder={t('tabScreens.profile.placeholders.height')}
+            unitLabel={t('tabScreens.profile.units.centimeters')}
+            value={field.value}
+          />
+        )}
+      />
+
+      {formError ? (
+        <ThemedText style={{ color: palette.errorText }}>{formError}</ThemedText>
       ) : null}
 
       <View style={styles.actions}>

@@ -1,9 +1,57 @@
 {
   "tabs": {
-    "trainingHistory": "Training History",
-    "statistics": "Statistics",
-    "newTraining": "New Training",
-    "profile": "Profile"
+    "trainingHistory": {
+      "label": "Training History"
+    },
+    "statistics": {
+      "label": "Statistics"
+    },
+    "newTraining": {
+      "label": "New Training"
+    },
+    "profile": {
+      "label": "Profile",
+      "weight": {
+        "measurementDate": {
+          "label": "Measurement Date",
+          "placeholder": "YYYY-MM-DD",
+          "required": "Select a measurement date.",
+          "invalid": "Select a valid measurement date."
+        },
+        "value": {
+          "label": "Current Weight",
+          "placeholder": "Enter your current weight",
+          "required": "Enter your weight.",
+          "invalid": "Enter a valid weight in kilograms."
+        },
+        "unit": "kg",
+        "entry": {
+          "title": "Add Weight Entry",
+          "submit": "Save Weight Entry",
+          "saveError": "Unable to save your weight entry right now."
+        },
+        "history": {
+          "title": "Weight History",
+          "description": "Review and update your saved weight entries.",
+          "empty": "No weight entries yet.",
+          "addAction": "Add Weight Entry",
+          "editAction": "Edit Entry",
+          "deleteAction": "Delete Entry",
+          "saveAction": "Save Entry",
+          "cancelAction": "Cancel",
+          "updateError": "Unable to update this weight entry right now.",
+          "deleteError": "Unable to delete this weight entry right now."
+        },
+        "chart": {
+          "title": "Weight Chart",
+          "empty": "Add weight entries to see your chart.",
+          "xAxis": "Measurement Date",
+          "yAxis": "Weight",
+          "latestPoint": "Latest Weight",
+          "weightSeries": "Weight History"
+        }
+      }
+    }
   },
   "tabScreens": {
     "trainingHistory": {
@@ -40,15 +88,11 @@
       "fields": {
         "name": "Name",
         "gender": "Gender",
-        "height": "Height",
-        "currentWeight": "Current Weight",
-        "measurementDate": "Measurement Date"
+        "height": "Height"
       },
       "placeholders": {
         "name": "Enter your name",
-        "height": "Enter your height",
-        "measurementDate": "YYYY-MM-DD",
-        "currentWeight": "Enter your current weight"
+        "height": "Enter your height"
       },
       "gender": {
         "male": "Male",
@@ -79,39 +123,10 @@
         "readOnlyHint": "Tap Edit to update your profile details.",
         "saveError": "Unable to save your profile changes right now."
       },
-      "weightEntry": {
-        "title": "Add Weight Entry",
-        "saveAction": "Save Weight Entry",
-        "saveError": "Unable to save your weight entry right now."
-      },
-      "weightHistory": {
-        "title": "Weight History",
-        "description": "Review and update your saved weight entries.",
-        "empty": "No weight entries yet.",
-        "addAction": "Add Weight Entry",
-        "editAction": "Edit Entry",
-        "deleteAction": "Delete Entry",
-        "saveAction": "Save Entry",
-        "cancelAction": "Cancel",
-        "updateError": "Unable to update this weight entry right now.",
-        "deleteError": "Unable to delete this weight entry right now."
-      },
-      "chart": {
-        "title": "Weight Chart",
-        "empty": "Add weight entries to see your chart.",
-        "xAxis": "Measurement Date",
-        "yAxis": "Weight",
-        "latestPoint": "Latest Weight",
-        "weightSeries": "Weight History"
-      },
       "validation": {
         "nameRequired": "Enter your name.",
         "heightRequired": "Enter your height.",
-        "heightInvalid": "Enter a valid height in centimeters.",
-        "weightRequired": "Enter your weight.",
-        "weightInvalid": "Enter a valid weight in kilograms.",
-        "measurementDateRequired": "Select a measurement date.",
-        "measurementDateInvalid": "Select a valid measurement date."
+        "heightInvalid": "Enter a valid height in centimeters."
       },
       "theme": {
         "description": "Choose how the app should look.",

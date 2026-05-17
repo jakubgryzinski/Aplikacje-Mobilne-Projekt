@@ -17,11 +17,6 @@ import { useProfileStore } from '@/store/profile-store';
 
 import { ProfileAvatarActionSheet } from './profile-avatar-action-sheet';
 
-const errorTextColor = {
-  dark: '#FF8A80',
-  light: '#C62828',
-} as const;
-
 export function ProfileAvatarSection() {
   const { t } = useTranslation();
   const theme = useAppTheme();
@@ -173,7 +168,7 @@ export function ProfileAvatarSection() {
         </Pressable>
 
         {errorMessage ? (
-          <ThemedText style={{ color: errorTextColor[theme] }}>{errorMessage}</ThemedText>
+          <ThemedText style={{ color: palette.errorText }}>{errorMessage}</ThemedText>
         ) : null}
       </View>
 

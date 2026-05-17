@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { ThemedText } from '@/components/themed-text';
@@ -8,91 +9,41 @@ import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/hooks/use-app-theme';
 import { createProfileWeightEntry } from '@/store/profile-actions';
 
-import {
-  getTodayDateInput,
-  parseMeasurementDateInput,
-  parsePositiveNumberInput,
-} from './profile-form-utils';
 import { ProfileActionButton } from './profile-action-button';
 import { ProfileNumberField } from './profile-number-field';
 import { ProfileTextField } from './profile-text-field';
-
-type ValidationState = {
-  form?: string;
-  measurementDate?: string;
-  weight?: string;
-};
-
-const errorTextColor = {
-  dark: '#FF8A80',
-  light: '#C62828',
-} as const;
+import {
+  getDefaultProfileWeightEntryFormValues,
+  getProfileWeightEntryFromFormValues,
+  type ProfileWeightEntryFormValues,
+  profileWeightEntryFormSchema,
+} from './profile-weight-entry-form.schema';
+import { createZodFormResolver } from './zod-form-resolver';
 
 export function ProfileWeightEntryForm() {
   const { t } = useTranslation();
   const theme = useAppTheme();
   const palette = Colors[theme];
-  const [measurementDateInput, setMeasurementDateInput] = useState(getTodayDateInput());
-  const [weightInput, setWeightInput] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [validationState, setValidationState] = useState<ValidationState>({});
+  const [formError, setFormError] = useState<string | undefined>();
+  const {
+    control,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    reset,
+  } = useForm<ProfileWeightEntryFormValues>({
+    defaultValues: getDefaultProfileWeightEntryFormValues(),
+    resolver: createZodFormResolver(profileWeightEntryFormSchema),
+  });
 
-  async function onSave() {
-    if (isSubmitting) {
-      return;
-    }
-
-    const nextValidationState: ValidationState = {};
-    const normalizedMeasuredAt = parseMeasurementDateInput(measurementDateInput);
-    const parsedWeightKilograms = parsePositiveNumberInput(weightInput);
-
-    if (measurementDateInput.trim().length === 0) {
-      nextValidationState.measurementDate = t(
-        'tabScreens.profile.validation.measurementDateRequired'
-      );
-    } else if (!normalizedMeasuredAt) {
-      nextValidationState.measurementDate = t(
-        'tabScreens.profile.validation.measurementDateInvalid'
-      );
-    }
-
-    if (parsedWeightKilograms === null) {
-      nextValidationState.weight = t('tabScreens.profile.validation.weightRequired');
-    } else if (parsedWeightKilograms === undefined) {
-      nextValidationState.weight = t('tabScreens.profile.validation.weightInvalid');
-    }
-
-    if (Object.keys(nextValidationState).length > 0) {
-      setValidationState(nextValidationState);
-      return;
-    }
-
-    if (
-      !normalizedMeasuredAt ||
-      parsedWeightKilograms === null ||
-      parsedWeightKilograms === undefined
-    ) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    setValidationState({});
-
+  const onSave = handleSubmit(async (formValues) => {
     try {
-      await createProfileWeightEntry({
-        measuredAt: normalizedMeasuredAt,
-        weightKilograms: parsedWeightKilograms,
-      });
-      setMeasurementDateInput(getTodayDateInput());
-      setWeightInput('');
+      setFormError(undefined);
+      await createProfileWeightEntry(getProfileWeightEntryFromFormValues(formValues));
+      reset(getDefaultProfileWeightEntryFormValues());
     } catch {
-      setValidationState({
-        form: t('tabScreens.profile.weightEntry.saveError'),
-      });
-    } finally {
-      setIsSubmitting(false);
+      setFormError(t('tabs.profile.weight.entry.saveError'));
     }
-  }
+  });
 
   return (
     <ThemedView
@@ -104,66 +55,68 @@ export function ProfileWeightEntryForm() {
         },
       ]}>
       <View style={styles.header}>
-        <ThemedText type="subtitle">{t('tabScreens.profile.weightEntry.title')}</ThemedText>
+        <ThemedText type="subtitle">{t('tabs.profile.weight.entry.title')}</ThemedText>
       </View>
 
-      <ProfileTextField
-        accessibilityLabel={t('tabScreens.profile.fields.measurementDate')}
-        editable={!isSubmitting}
-        keyboardType="numbers-and-punctuation"
-        label={t('tabScreens.profile.fields.measurementDate')}
-        onChangeText={(value) => {
-          setMeasurementDateInput(value);
+      <Controller
+        control={control}
+        name="measurementDate"
+        render={({ field }) => (
+          <ProfileTextField
+            accessibilityLabel={t('tabs.profile.weight.measurementDate.label')}
+            editable={!isSubmitting}
+            errorMessage={
+              errors.measurementDate?.message ? t(errors.measurementDate.message) : undefined
+            }
+            keyboardType="numbers-and-punctuation"
+            label={t('tabs.profile.weight.measurementDate.label')}
+            onBlur={field.onBlur}
+            onChangeText={(textValue) => {
+              if (formError) {
+                setFormError(undefined);
+              }
 
-          if (validationState.measurementDate || validationState.form) {
-            setValidationState((currentState) => ({
-              ...currentState,
-              form: undefined,
-              measurementDate: undefined,
-            }));
-          }
-        }}
-        placeholder={t('tabScreens.profile.placeholders.measurementDate')}
-        value={measurementDateInput}
+              field.onChange(textValue);
+            }}
+            placeholder={t('tabs.profile.weight.measurementDate.placeholder')}
+            value={field.value}
+          />
+        )}
       />
-      {validationState.measurementDate ? (
-        <ThemedText style={{ color: errorTextColor[theme] }}>
-          {validationState.measurementDate}
-        </ThemedText>
-      ) : null}
 
-      <ProfileNumberField
-        accessibilityLabel={t('tabScreens.profile.fields.currentWeight')}
-        editable={!isSubmitting}
-        label={t('tabScreens.profile.fields.currentWeight')}
-        onChangeText={(value) => {
-          setWeightInput(value);
+      <Controller
+        control={control}
+        name="weight"
+        render={({ field }) => (
+          <ProfileNumberField
+            accessibilityLabel={t('tabs.profile.weight.value.label')}
+            editable={!isSubmitting}
+            errorMessage={errors.weight?.message ? t(errors.weight.message) : undefined}
+            label={t('tabs.profile.weight.value.label')}
+            onBlur={field.onBlur}
+            onChangeText={(textValue) => {
+              if (formError) {
+                setFormError(undefined);
+              }
 
-          if (validationState.weight || validationState.form) {
-            setValidationState((currentState) => ({
-              ...currentState,
-              form: undefined,
-              weight: undefined,
-            }));
-          }
-        }}
-        placeholder={t('tabScreens.profile.placeholders.currentWeight')}
-        unitLabel={t('tabScreens.profile.units.kilograms')}
-        value={weightInput}
+              field.onChange(textValue);
+            }}
+            placeholder={t('tabs.profile.weight.value.placeholder')}
+            unitLabel={t('tabs.profile.weight.unit')}
+            value={field.value}
+          />
+        )}
       />
-      {validationState.weight ? (
-        <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.weight}</ThemedText>
-      ) : null}
 
-      {validationState.form ? (
-        <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.form}</ThemedText>
+      {formError ? (
+        <ThemedText style={{ color: palette.errorText }}>{formError}</ThemedText>
       ) : null}
 
       <View style={styles.actions}>
         <ProfileActionButton
           disabled={isSubmitting}
           isPrimary
-          label={t('tabScreens.profile.weightEntry.saveAction')}
+          label={t('tabs.profile.weight.entry.submit')}
           onPress={() => {
             void onSave();
           }}

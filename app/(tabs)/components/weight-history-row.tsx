@@ -34,11 +34,6 @@ type ValidationState = {
   weight?: string;
 };
 
-const errorTextColor = {
-  dark: '#FF8A80',
-  light: '#C62828',
-} as const;
-
 export function WeightHistoryRow({
   entry,
   isEditing,
@@ -77,19 +72,15 @@ export function WeightHistoryRow({
     const parsedWeightKilograms = parsePositiveNumberInput(weightInput);
 
     if (measurementDateInput.trim().length === 0) {
-      nextValidationState.measurementDate = t(
-        'tabScreens.profile.validation.measurementDateRequired'
-      );
+      nextValidationState.measurementDate = t('tabs.profile.weight.measurementDate.required');
     } else if (!normalizedMeasuredAt) {
-      nextValidationState.measurementDate = t(
-        'tabScreens.profile.validation.measurementDateInvalid'
-      );
+      nextValidationState.measurementDate = t('tabs.profile.weight.measurementDate.invalid');
     }
 
     if (parsedWeightKilograms === null) {
-      nextValidationState.weight = t('tabScreens.profile.validation.weightRequired');
+      nextValidationState.weight = t('tabs.profile.weight.value.required');
     } else if (parsedWeightKilograms === undefined) {
-      nextValidationState.weight = t('tabScreens.profile.validation.weightInvalid');
+      nextValidationState.weight = t('tabs.profile.weight.value.invalid');
     }
 
     if (Object.keys(nextValidationState).length > 0) {
@@ -108,7 +99,7 @@ export function WeightHistoryRow({
       await onSave(entry.id, normalizedMeasuredAt, parsedWeightKilograms);
     } catch {
       setValidationState({
-        form: t('tabScreens.profile.weightHistory.updateError'),
+        form: t('tabs.profile.weight.history.updateError'),
       });
     } finally {
       setIsSubmitting(false);
@@ -127,7 +118,7 @@ export function WeightHistoryRow({
       await onDelete(entry.id);
     } catch {
       setValidationState({
-        form: t('tabScreens.profile.weightHistory.deleteError'),
+        form: t('tabs.profile.weight.history.deleteError'),
       });
     } finally {
       setIsSubmitting(false);
@@ -148,7 +139,7 @@ export function WeightHistoryRow({
           <ProfileTextField
             editable={!isSubmitting}
             keyboardType="numbers-and-punctuation"
-            label={t('tabScreens.profile.fields.measurementDate')}
+            label={t('tabs.profile.weight.measurementDate.label')}
             onChangeText={(value) => {
               setMeasurementDateInput(value);
 
@@ -160,18 +151,18 @@ export function WeightHistoryRow({
                 }));
               }
             }}
-            placeholder={t('tabScreens.profile.placeholders.measurementDate')}
+            placeholder={t('tabs.profile.weight.measurementDate.placeholder')}
             value={measurementDateInput}
           />
           {validationState.measurementDate ? (
-            <ThemedText style={{ color: errorTextColor[theme] }}>
+            <ThemedText style={{ color: palette.errorText }}>
               {validationState.measurementDate}
             </ThemedText>
           ) : null}
 
           <ProfileNumberField
             editable={!isSubmitting}
-            label={t('tabScreens.profile.fields.currentWeight')}
+            label={t('tabs.profile.weight.value.label')}
             onChangeText={(value) => {
               setWeightInput(value);
 
@@ -183,30 +174,30 @@ export function WeightHistoryRow({
                 }));
               }
             }}
-            placeholder={t('tabScreens.profile.placeholders.currentWeight')}
-            unitLabel={t('tabScreens.profile.units.kilograms')}
+            placeholder={t('tabs.profile.weight.value.placeholder')}
+            unitLabel={t('tabs.profile.weight.unit')}
             value={weightInput}
           />
           {validationState.weight ? (
-            <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.weight}</ThemedText>
+            <ThemedText style={{ color: palette.errorText }}>{validationState.weight}</ThemedText>
           ) : null}
 
           {validationState.form ? (
-            <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.form}</ThemedText>
+            <ThemedText style={{ color: palette.errorText }}>{validationState.form}</ThemedText>
           ) : null}
 
           <View style={styles.actions}>
             <ProfileActionButton
               disabled={isSubmitting}
               isPrimary
-              label={t('tabScreens.profile.weightHistory.saveAction')}
+              label={t('tabs.profile.weight.history.saveAction')}
               onPress={() => {
                 void saveRow();
               }}
             />
             <ProfileActionButton
               disabled={isSubmitting}
-              label={t('tabScreens.profile.weightHistory.cancelAction')}
+              label={t('tabs.profile.weight.history.cancelAction')}
               onPress={onCancelEditing}
             />
           </View>
@@ -218,23 +209,23 @@ export function WeightHistoryRow({
               {formatMeasurementDateForDisplay(entry.measuredAt, locale)}
             </ThemedText>
             <ThemedText style={{ color: palette.mutedText }}>
-              {`${entry.weightKilograms} ${t('tabScreens.profile.units.kilograms')}`}
+              {`${entry.weightKilograms} ${t('tabs.profile.weight.unit')}`}
             </ThemedText>
           </View>
 
           {validationState.form ? (
-            <ThemedText style={{ color: errorTextColor[theme] }}>{validationState.form}</ThemedText>
+            <ThemedText style={{ color: palette.errorText }}>{validationState.form}</ThemedText>
           ) : null}
 
           <View style={styles.actions}>
             <ProfileActionButton
               disabled={isInteractionDisabled || isSubmitting}
-              label={t('tabScreens.profile.weightHistory.editAction')}
+              label={t('tabs.profile.weight.history.editAction')}
               onPress={() => onStartEditing(entry.id)}
             />
             <ProfileActionButton
               disabled={isInteractionDisabled || isSubmitting}
-              label={t('tabScreens.profile.weightHistory.deleteAction')}
+              label={t('tabs.profile.weight.history.deleteAction')}
               onPress={() => {
                 void deleteRow();
               }}

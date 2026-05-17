@@ -22,28 +22,28 @@ export default function TabLayout() {
       <Tabs.Screen
         name="training-history"
         options={{
-          title: t('tabs.trainingHistory'),
+          title: t('tabs.trainingHistory.label'),
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="clock.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="statistics"
         options={{
-          title: t('tabs.statistics'),
+          title: t('tabs.statistics.label'),
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="chart.bar.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="new-training"
         options={{
-          title: t('tabs.newTraining'),
+          title: t('tabs.newTraining.label'),
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="plus.circle.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: t('tabs.profile'),
+          title: t('tabs.profile.label'),
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
         }}
       />

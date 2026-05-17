@@ -54,11 +54,11 @@ export function ProfileWeightChart() {
   );
 
   const latestPointSummary = chartModel.latestPoint
-    ? `${chartModel.latestPoint.weightLabel} ${t('tabScreens.profile.units.kilograms')} • ${chartModel.latestPoint.dateLabel}`
+    ? `${chartModel.latestPoint.weightLabel} ${t('tabs.profile.weight.unit')} • ${chartModel.latestPoint.dateLabel}`
     : null;
   const accessibilityLabel = chartModel.latestPoint
-    ? `${t('tabScreens.profile.chart.title')}. ${t('tabScreens.profile.chart.weightSeries')}. ${weightHistoryEntries.length}. ${t('tabScreens.profile.chart.latestPoint')}: ${latestPointSummary}.`
-    : `${t('tabScreens.profile.chart.title')}. ${t('tabScreens.profile.chart.weightSeries')}. ${weightHistoryEntries.length}.`;
+    ? `${t('tabs.profile.weight.chart.title')}. ${t('tabs.profile.weight.chart.weightSeries')}. ${weightHistoryEntries.length}. ${t('tabs.profile.weight.chart.latestPoint')}: ${latestPointSummary}.`
+    : `${t('tabs.profile.weight.chart.title')}. ${t('tabs.profile.weight.chart.weightSeries')}. ${weightHistoryEntries.length}.`;
 
   function updateViewportWidth(event: LayoutChangeEvent) {
     setViewportWidth((currentWidth) => {
@@ -80,23 +80,23 @@ export function ProfileWeightChart() {
         },
       ]}>
       <View style={styles.header}>
-        <ThemedText type="defaultSemiBold">{t('tabScreens.profile.chart.title')}</ThemedText>
+        <ThemedText type="defaultSemiBold">{t('tabs.profile.weight.chart.title')}</ThemedText>
         {latestPointSummary ? (
           <ThemedText style={{ color: palette.mutedText }}>
-            {`${t('tabScreens.profile.chart.latestPoint')}: ${latestPointSummary}`}
+            {`${t('tabs.profile.weight.chart.latestPoint')}: ${latestPointSummary}`}
           </ThemedText>
         ) : null}
       </View>
 
       {weightHistoryEntries.length === 0 ? (
         <ThemedText style={{ color: palette.mutedText }}>
-          {t('tabScreens.profile.chart.empty')}
+          {t('tabs.profile.weight.chart.empty')}
         </ThemedText>
       ) : (
         <View style={styles.chartContent}>
           <View style={styles.axisHeader}>
             <ThemedText style={{ color: palette.mutedText }}>
-              {`${t('tabScreens.profile.chart.yAxis')} (${t('tabScreens.profile.units.kilograms')})`}
+              {`${t('tabs.profile.weight.chart.yAxis')} (${t('tabs.profile.weight.unit')})`}
             </ThemedText>
           </View>
 
@@ -176,7 +176,7 @@ export function ProfileWeightChart() {
           </View>
 
           <ThemedText style={[styles.axisCaption, { color: palette.mutedText }]}>
-            {t('tabScreens.profile.chart.xAxis')}
+            {t('tabs.profile.weight.chart.xAxis')}
           </ThemedText>
         </View>
       )}

@@ -2,7 +2,6 @@ import { create } from 'zustand';
 
 import {
   emptyProfileDetails,
-  type ProfileGender,
   type ProfileDetails,
   type ProfileStateHydrationPayload,
   type WeightHistoryEntry,
@@ -16,10 +15,6 @@ type ProfileStoreState = {
   hydrateProfile: (payload: ProfileStateHydrationPayload) => void;
   startHydration: () => void;
   finishHydration: () => void;
-  setAvatarUri: (avatarUri: string | null) => void;
-  setName: (name: string) => void;
-  setGender: (gender: ProfileGender | null) => void;
-  setHeightCentimeters: (heightCentimeters: number | null) => void;
   setWeightHistoryEntries: (weightHistoryEntries: WeightHistoryEntry[]) => void;
 };
 
@@ -49,34 +44,6 @@ export const useProfileStore = create<ProfileStoreState>((set) => ({
       isHydrated: true,
       isHydrating: false,
     }),
-  setAvatarUri: (avatarUri) =>
-    set((state) => ({
-      profileDetails: {
-        ...state.profileDetails,
-        avatarUri,
-      },
-    })),
-  setName: (name) =>
-    set((state) => ({
-      profileDetails: {
-        ...state.profileDetails,
-        name,
-      },
-    })),
-  setGender: (gender) =>
-    set((state) => ({
-      profileDetails: {
-        ...state.profileDetails,
-        gender,
-      },
-    })),
-  setHeightCentimeters: (heightCentimeters) =>
-    set((state) => ({
-      profileDetails: {
-        ...state.profileDetails,
-        heightCentimeters,
-      },
-    })),
   setWeightHistoryEntries: (weightHistoryEntries) =>
     set({
       weightHistoryEntries,

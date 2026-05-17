@@ -8,7 +8,9 @@ import { useAppTheme } from '@/hooks/use-app-theme';
 export type ProfileNumberFieldProps = {
   accessibilityLabel?: string;
   editable?: boolean;
+  errorMessage?: string;
   label: string;
+  onBlur?: () => void;
   onChangeText: (value: string) => void;
   placeholder?: string;
   unitLabel: string;
@@ -18,7 +20,9 @@ export type ProfileNumberFieldProps = {
 export function ProfileNumberField({
   accessibilityLabel,
   editable = true,
+  errorMessage,
   label,
+  onBlur,
   onChangeText,
   placeholder,
   unitLabel,
@@ -42,6 +46,7 @@ export function ProfileNumberField({
           accessibilityLabel={accessibilityLabel ?? label}
           editable={editable}
           keyboardType="decimal-pad"
+          onBlur={onBlur}
           onChangeText={onChangeText}
           placeholder={placeholder}
           placeholderTextColor={palette.mutedText}
@@ -57,6 +62,9 @@ export function ProfileNumberField({
         />
         <ThemedText style={{ color: palette.mutedText }}>{unitLabel}</ThemedText>
       </ThemedView>
+      {errorMessage ? (
+        <ThemedText style={{ color: palette.errorText }}>{errorMessage}</ThemedText>
+      ) : null}
     </View>
   );
 }

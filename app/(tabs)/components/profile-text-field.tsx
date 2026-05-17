@@ -7,8 +7,10 @@ import { useAppTheme } from '@/hooks/use-app-theme';
 export type ProfileTextFieldProps = {
   accessibilityLabel?: string;
   editable?: boolean;
+  errorMessage?: string;
   keyboardType?: KeyboardTypeOptions;
   label: string;
+  onBlur?: () => void;
   onChangeText: (value: string) => void;
   placeholder?: string;
   value: string;
@@ -17,8 +19,10 @@ export type ProfileTextFieldProps = {
 export function ProfileTextField({
   accessibilityLabel,
   editable = true,
+  errorMessage,
   keyboardType,
   label,
+  onBlur,
   onChangeText,
   placeholder,
   value,
@@ -33,6 +37,7 @@ export function ProfileTextField({
         accessibilityLabel={accessibilityLabel ?? label}
         editable={editable}
         keyboardType={keyboardType}
+        onBlur={onBlur}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={palette.mutedText}
@@ -48,6 +53,9 @@ export function ProfileTextField({
         ]}
         value={value}
       />
+      {errorMessage ? (
+        <ThemedText style={{ color: palette.errorText }}>{errorMessage}</ThemedText>
+      ) : null}
     </View>
   );
 }
