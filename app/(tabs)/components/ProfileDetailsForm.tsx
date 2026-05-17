@@ -206,6 +206,30 @@ export function ProfileDetailsForm() {
         )}
       />
 
+      <Controller
+        control={control}
+        name="birthDate"
+        render={({ field }) => (
+          <ProfileTextField
+            accessibilityLabel={t('tabScreens.profile.fields.birthDate')}
+            editable={isEditing}
+            errorMessage={errors.birthDate?.message ? t(errors.birthDate.message) : undefined}
+            keyboardType="numbers-and-punctuation"
+            label={t('tabScreens.profile.fields.birthDate')}
+            onBlur={field.onBlur}
+            onChangeText={(textValue) => {
+              if (formError) {
+                setFormError(undefined);
+              }
+
+              field.onChange(textValue);
+            }}
+            placeholder={t('tabScreens.profile.placeholders.birthDate')}
+            value={field.value}
+          />
+        )}
+      />
+
       {formError ? (
         <ThemedText style={{ color: palette.errorText }}>{formError}</ThemedText>
       ) : null}

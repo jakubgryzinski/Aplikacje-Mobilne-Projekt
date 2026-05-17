@@ -56,6 +56,22 @@
           "yAxis": "Waga",
           "latestPoint": "Najnowsza Waga",
           "weightSeries": "Historia Wagi"
+        },
+        "bmi": {
+          "title": "Wykres BMI",
+          "empty": "Dodaj pomiary wagi od 18. roku życia, aby zobaczyć wykres BMI.",
+          "unavailableUnder18": "Standardy BMI WHO dla dorosłych są pokazywane od 18. roku życia.",
+          "xAxis": "Data Pomiaru",
+          "yAxis": "BMI",
+          "latestPoint": "Najnowsze BMI",
+          "series": "Historia BMI",
+          "unit": "kg/m²",
+          "categories": {
+            "underweight": "Niedowaga",
+            "healthy": "Prawidłowa masa",
+            "overweight": "Nadwaga",
+            "obesity": "Otyłość"
+          }
         }
       }
     }
@@ -95,11 +111,13 @@
       "fields": {
         "name": "Imię",
         "gender": "Płeć",
-        "height": "Wzrost"
+        "height": "Wzrost",
+        "birthDate": "Data Urodzenia"
       },
       "placeholders": {
         "name": "Wpisz swoje imię",
-        "height": "Podaj swój wzrost"
+        "height": "Podaj swój wzrost",
+        "birthDate": "RRRR-MM-DD"
       },
       "gender": {
         "male": "Mężczyzna",
@@ -133,7 +151,9 @@
       "validation": {
         "nameRequired": "Wpisz swoje imię.",
         "heightRequired": "Podaj swój wzrost.",
-        "heightInvalid": "Podaj prawidłowy wzrost w centymetrach."
+        "heightInvalid": "Podaj prawidłowy wzrost w centymetrach.",
+        "birthDateRequired": "Podaj swoją datę urodzenia.",
+        "birthDateInvalid": "Podaj prawidłową datę urodzenia."
       },
       "theme": {
         "description": "Wybierz sposób wyświetlania aplikacji.",

@@ -13,6 +13,7 @@ import {
 } from '@/store/profile-actions';
 import { useProfileStore } from '@/store/profile-store';
 
+import { ProfileBmiChart } from './ProfileBmiChart';
 import { ProfileWeightChart } from './ProfileWeightChart';
 import { ProfileWeightEntryForm } from './ProfileWeightEntryForm';
 import { WeightHistoryRow } from './WeightHistoryRow';
@@ -60,6 +61,7 @@ export function WeightHistorySection() {
     <View style={styles.section}>
       <ProfileWeightEntryForm />
       <ProfileWeightChart />
+      <ProfileBmiChart />
 
       {deleteError ? (
         <ThemedText style={{ color: palette.errorText }}>{deleteError}</ThemedText>

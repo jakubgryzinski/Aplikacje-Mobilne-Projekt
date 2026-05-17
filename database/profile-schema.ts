@@ -6,7 +6,8 @@ export const PROFILE_DETAILS_TABLE_SQL = `
     avatar_uri TEXT,
     name TEXT NOT NULL DEFAULT '',
     gender TEXT NOT NULL DEFAULT 'male' CHECK (gender IN ('male', 'female')),
-    height_centimeters REAL CHECK (height_centimeters IS NULL OR height_centimeters > 0)
+    height_centimeters REAL CHECK (height_centimeters IS NULL OR height_centimeters > 0),
+    birth_date TEXT
   );
 `;
 

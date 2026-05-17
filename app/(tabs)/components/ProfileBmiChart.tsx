@@ -9,7 +9,12 @@ import { useAppTheme } from '@/hooks/use-app-theme';
 import { useAppSettingsStore } from '@/store/app-settings';
 import { useProfileStore } from '@/store/profile-store';
 
-import { buildWeightChartModel } from './profile-chart-utils';
+import {
+  buildBmiChartModel,
+  getAdultWeightHistoryEntries,
+  type BmiCategory,
+  type BmiChartModel,
+} from './profile-bmi-chart-utils';
 
 const CHART_HEIGHT = 220;
 const GUIDE_LINE_COUNT = 4;
@@ -20,44 +25,93 @@ const POINT_SPACING = 64;
 const RIGHT_PADDING = 16;
 const TOP_PADDING = 20;
 
+const categoryTranslationKeyByBmiCategory: Record<BmiCategory, string> = {
+  underweight: 'tabs.profile.weight.bmi.categories.underweight',
+  healthy: 'tabs.profile.weight.bmi.categories.healthy',
+  overweight: 'tabs.profile.weight.bmi.categories.overweight',
+  obesity: 'tabs.profile.weight.bmi.categories.obesity',
+};
+
 const getLocale = (languagePreference: 'en' | 'pl'): string =>
   languagePreference === 'pl' ? 'pl-PL' : 'en-US';
 
-export function ProfileWeightChart() {
+const emptyBmiChartModel: BmiChartModel = {
+  guideLines: [],
+  isAdult: false,
+  latestPoint: null,
+  linePath: '',
+  points: [],
+};
+
+export function ProfileBmiChart() {
   const { t } = useTranslation();
   const theme = useAppTheme();
   const palette = Colors[theme];
   const languagePreference = useAppSettingsStore((state) => state.languagePreference);
+  const profileDetails = useProfileStore((state) => state.profileDetails);
   const weightHistoryEntries = useProfileStore((state) => state.weightHistoryEntries);
   const [viewportWidth, setViewportWidth] = useState(0);
   const locale = getLocale(languagePreference);
+  const birthDate = profileDetails.birthDate;
+  const heightCentimeters = profileDetails.heightCentimeters;
+  const hasRequiredInputs =
+    birthDate !== null &&
+    heightCentimeters !== null &&
+    Number.isFinite(heightCentimeters) &&
+    heightCentimeters > 0;
+  const resolvedBirthDate = birthDate ?? '';
+  const resolvedHeightCentimeters = heightCentimeters ?? 0;
+  const adultWeightHistoryEntries = useMemo(
+    () =>
+      hasRequiredInputs
+        ? getAdultWeightHistoryEntries(weightHistoryEntries, resolvedBirthDate)
+        : [],
+    [hasRequiredInputs, resolvedBirthDate, weightHistoryEntries]
+  );
   const resolvedViewportWidth = viewportWidth > 0 ? viewportWidth : MIN_CHART_WIDTH;
   const chartWidth = Math.max(
     resolvedViewportWidth,
-    Math.max(MIN_CHART_WIDTH, weightHistoryEntries.length * POINT_SPACING)
+    Math.max(MIN_CHART_WIDTH, adultWeightHistoryEntries.length * POINT_SPACING)
   );
   const chartModel = useMemo(
     () =>
-      buildWeightChartModel({
-        chartHeight: CHART_HEIGHT + LABEL_AREA_HEIGHT,
-        chartWidth,
-        entries: weightHistoryEntries,
-        guideLineCount: GUIDE_LINE_COUNT,
-        locale,
-        plotBottom: LABEL_AREA_HEIGHT,
-        plotLeft: LEFT_AXIS_WIDTH,
-        plotRight: RIGHT_PADDING,
-        plotTop: TOP_PADDING,
-      }),
-    [chartWidth, locale, weightHistoryEntries]
+      hasRequiredInputs
+        ? buildBmiChartModel({
+            birthDate: resolvedBirthDate,
+            chartHeight: CHART_HEIGHT + LABEL_AREA_HEIGHT,
+            chartWidth,
+            entries: weightHistoryEntries,
+            guideLineCount: GUIDE_LINE_COUNT,
+            heightCentimeters: resolvedHeightCentimeters,
+            locale,
+            plotBottom: LABEL_AREA_HEIGHT,
+            plotLeft: LEFT_AXIS_WIDTH,
+            plotRight: RIGHT_PADDING,
+            plotTop: TOP_PADDING,
+          })
+        : emptyBmiChartModel,
+    [
+      chartWidth,
+      hasRequiredInputs,
+      locale,
+      resolvedBirthDate,
+      resolvedHeightCentimeters,
+      weightHistoryEntries,
+    ]
   );
 
+  if (!hasRequiredInputs) {
+    return null;
+  }
+
   const latestPointSummary = chartModel.latestPoint
-    ? `${chartModel.latestPoint.weightLabel} ${t('tabs.profile.weight.unit')} • ${chartModel.latestPoint.dateLabel}`
+    ? `${chartModel.latestPoint.bmiLabel} ${t('tabs.profile.weight.bmi.unit')} • ${t(categoryTranslationKeyByBmiCategory[chartModel.latestPoint.bmiCategory])} • ${chartModel.latestPoint.dateLabel}`
     : null;
-  const accessibilityLabel = chartModel.latestPoint
-    ? `${t('tabs.profile.weight.chart.title')}. ${t('tabs.profile.weight.chart.weightSeries')}. ${weightHistoryEntries.length}. ${t('tabs.profile.weight.chart.latestPoint')}: ${latestPointSummary}.`
-    : `${t('tabs.profile.weight.chart.title')}. ${t('tabs.profile.weight.chart.weightSeries')}. ${weightHistoryEntries.length}.`;
+  const accessibilityLabel = latestPointSummary
+    ? `${t('tabs.profile.weight.bmi.title')}. ${t('tabs.profile.weight.bmi.series')}. ${chartModel.points.length}. ${t('tabs.profile.weight.bmi.latestPoint')}: ${latestPointSummary}.`
+    : chartModel.isAdult
+      ? `${t('tabs.profile.weight.bmi.title')}. ${t('tabs.profile.weight.bmi.empty')}`
+      : `${t('tabs.profile.weight.bmi.title')}. ${t('tabs.profile.weight.bmi.unavailableUnder18')}`;
 
   const updateViewportWidth = (event: LayoutChangeEvent) => {
     const nextWidth = Math.round(event.nativeEvent.layout.width);
@@ -79,23 +133,27 @@ export function ProfileWeightChart() {
         },
       ]}>
       <View style={styles.header}>
-        <ThemedText type="defaultSemiBold">{t('tabs.profile.weight.chart.title')}</ThemedText>
+        <ThemedText type="defaultSemiBold">{t('tabs.profile.weight.bmi.title')}</ThemedText>
         {latestPointSummary ? (
           <ThemedText style={{ color: palette.mutedText }}>
-            {`${t('tabs.profile.weight.chart.latestPoint')}: ${latestPointSummary}`}
+            {`${t('tabs.profile.weight.bmi.latestPoint')}: ${latestPointSummary}`}
           </ThemedText>
         ) : null}
       </View>
 
-      {weightHistoryEntries.length === 0 ? (
+      {!chartModel.isAdult ? (
         <ThemedText style={{ color: palette.mutedText }}>
-          {t('tabs.profile.weight.chart.empty')}
+          {t('tabs.profile.weight.bmi.unavailableUnder18')}
+        </ThemedText>
+      ) : chartModel.points.length === 0 ? (
+        <ThemedText style={{ color: palette.mutedText }}>
+          {t('tabs.profile.weight.bmi.empty')}
         </ThemedText>
       ) : (
         <View style={styles.chartContent}>
           <View style={styles.axisHeader}>
             <ThemedText style={{ color: palette.mutedText }}>
-              {`${t('tabs.profile.weight.chart.yAxis')} (${t('tabs.profile.weight.unit')})`}
+              {`${t('tabs.profile.weight.bmi.yAxis')} (${t('tabs.profile.weight.bmi.unit')})`}
             </ThemedText>
           </View>
 
@@ -175,7 +233,7 @@ export function ProfileWeightChart() {
           </View>
 
           <ThemedText style={[styles.axisCaption, { color: palette.mutedText }]}>
-            {t('tabs.profile.weight.chart.xAxis')}
+            {t('tabs.profile.weight.bmi.xAxis')}
           </ThemedText>
         </View>
       )}

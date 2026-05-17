@@ -5,6 +5,7 @@ export type ProfileDetails = {
   name: string;
   gender: ProfileGender;
   heightCentimeters: number | null;
+  birthDate: string | null;
 };
 
 export type WeightHistoryEntry = {
@@ -28,4 +29,5 @@ export const emptyProfileDetails: ProfileDetails = {
   name: '',
   gender: 'male',
   heightCentimeters: null,
+  birthDate: null,
 };

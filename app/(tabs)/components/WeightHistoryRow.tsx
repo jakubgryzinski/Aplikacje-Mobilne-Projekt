@@ -11,7 +11,7 @@ import { ProfileActionButton } from './ProfileActionButton';
 import {
   formatDateInputFromIso,
   formatMeasurementDateForDisplay,
-  parseMeasurementDateInput,
+  parseDateInput,
   parsePositiveNumberInput,
 } from './profile-form-utils';
 import { ProfileNumberField } from './ProfileNumberField';
@@ -68,7 +68,7 @@ export function WeightHistoryRow({
     }
 
     const nextValidationState: ValidationState = {};
-    const normalizedMeasuredAt = parseMeasurementDateInput(measurementDateInput);
+    const normalizedMeasuredAt = parseDateInput(measurementDateInput);
     const parsedWeightKilograms = parsePositiveNumberInput(weightInput);
 
     if (measurementDateInput.trim().length === 0) {

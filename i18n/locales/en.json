@@ -56,6 +56,22 @@
           "yAxis": "Weight",
           "latestPoint": "Latest Weight",
           "weightSeries": "Weight History"
+        },
+        "bmi": {
+          "title": "BMI Chart",
+          "empty": "Add weight entries from age 18 onward to see your BMI chart.",
+          "unavailableUnder18": "WHO adult BMI standards are shown from age 18.",
+          "xAxis": "Measurement Date",
+          "yAxis": "BMI",
+          "latestPoint": "Latest BMI",
+          "series": "BMI History",
+          "unit": "kg/m²",
+          "categories": {
+            "underweight": "Underweight",
+            "healthy": "Healthy",
+            "overweight": "Overweight",
+            "obesity": "Obesity"
+          }
         }
       }
     }
@@ -95,11 +111,13 @@
       "fields": {
         "name": "Name",
         "gender": "Gender",
-        "height": "Height"
+        "height": "Height",
+        "birthDate": "Birthdate"
       },
       "placeholders": {
         "name": "Enter your name",
-        "height": "Enter your height"
+        "height": "Enter your height",
+        "birthDate": "YYYY-MM-DD"
       },
       "gender": {
         "male": "Male",
@@ -133,7 +151,9 @@
       "validation": {
         "nameRequired": "Enter your name.",
         "heightRequired": "Enter your height.",
-        "heightInvalid": "Enter a valid height in centimeters."
+        "heightInvalid": "Enter a valid height in centimeters.",
+        "birthDateRequired": "Enter your birthdate.",
+        "birthDateInvalid": "Enter a valid birthdate."
       },
       "theme": {
         "description": "Choose how the app should look.",

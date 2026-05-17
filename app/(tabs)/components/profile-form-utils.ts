@@ -33,21 +33,7 @@ export const getTodayDateInput = (): string => {
   );
 };
 
-export const formatDateInputFromIso = (value: string): string => {
-  const parsedDate = new Date(value);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return '';
-  }
-
-  return formatDateParts(
-    parsedDate.getUTCFullYear(),
-    parsedDate.getUTCMonth() + 1,
-    parsedDate.getUTCDate()
-  );
-};
-
-export const parseMeasurementDateInput = (value: string): string | undefined => {
+export const parseDateInput = (value: string): string | undefined => {
   const normalizedValue = value.trim();
   const match = normalizedValue.match(/^(\d{4})-(\d{2})-(\d{2})$/);
 
@@ -70,6 +56,24 @@ export const parseMeasurementDateInput = (value: string): string | undefined => 
   }
 
   return parsedDate.toISOString();
+};
+
+export const formatDateInputFromIso = (value: string): string => {
+  const parsedDate = new Date(value);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return '';
+  }
+
+  return formatDateParts(
+    parsedDate.getUTCFullYear(),
+    parsedDate.getUTCMonth() + 1,
+    parsedDate.getUTCDate()
+  );
+};
+
+export const isIsoDateInFuture = (value: string): boolean => {
+  return formatDateInputFromIso(value) > getTodayDateInput();
 };
 
 export const formatMeasurementDateForDisplay = (

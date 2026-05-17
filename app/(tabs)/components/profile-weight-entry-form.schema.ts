@@ -4,7 +4,7 @@ import type { NewWeightHistoryEntry } from '@/store/profile-types';
 
 import {
   getTodayDateInput,
-  parseMeasurementDateInput,
+  parseDateInput,
   parsePositiveNumberInput,
 } from './profile-form-utils';
 
@@ -18,7 +18,7 @@ const measurementDateSchema = z.string().superRefine((value, context) => {
     return;
   }
 
-  if (!parseMeasurementDateInput(value)) {
+  if (!parseDateInput(value)) {
     context.addIssue({
       code: 'custom',
       message: 'tabs.profile.weight.measurementDate.invalid',
@@ -64,7 +64,7 @@ export function getProfileWeightEntryFromFormValues(
   formValues: ProfileWeightEntryFormValues
 ): NewWeightHistoryEntry {
   return {
-    measuredAt: parseMeasurementDateInput(formValues.measurementDate) ?? '',
+    measuredAt: parseDateInput(formValues.measurementDate) ?? '',
     weightKilograms: parsePositiveNumberInput(formValues.weight) ?? 0,
   };
 }
