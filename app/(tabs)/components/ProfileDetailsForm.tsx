@@ -10,6 +10,7 @@ import { updateLanguagePreference, updateThemePreference } from '@/store/app-set
 import { useAppSettingsStore } from '@/store/app-settings';
 import { saveProfileIdentity } from '@/store/profile-actions';
 import { useProfileStore } from '@/store/profile-store';
+import type { ProfileGender } from '@/store/profile-types';
 
 import { OptionToggleGroup } from './OptionToggleGroup';
 import { ProfileActionButton } from './ProfileActionButton';
@@ -32,10 +33,11 @@ export function ProfileDetailsForm() {
   const themePreference = useAppSettingsStore((state) => state.themePreference);
   const [isEditing, setIsEditing] = useState(false);
   const [formError, setFormError] = useState<string | undefined>();
+  const [isSavingGender, setIsSavingGender] = useState(false);
   const {
     control,
     formState: { errors, isSubmitting },
-    handleSubmit,
+    handleSubmit: onSubmit,
     reset,
   } = useForm<ProfileDetailsFormValues>({
     defaultValues: getProfileDetailsFormValues(profileDetails),
@@ -63,7 +65,7 @@ export function ProfileDetailsForm() {
     setIsEditing(false);
   };
 
-  const onSave = handleSubmit(async (formValues) => {
+  const onSave = onSubmit(async (formValues) => {
     try {
       setFormError(undefined);
       await saveProfileIdentity(
@@ -74,6 +76,25 @@ export function ProfileDetailsForm() {
       setFormError(t('tabScreens.profile.form.saveError'));
     }
   });
+
+  const onGenderChange = async (gender: ProfileGender) => {
+    if (gender === profileDetails.gender || isSavingGender) {
+      return;
+    }
+
+    try {
+      setFormError(undefined);
+      setIsSavingGender(true);
+      await saveProfileIdentity({
+        ...profileDetails,
+        gender,
+      });
+    } catch {
+      setFormError(t('tabScreens.profile.form.saveError'));
+    } finally {
+      setIsSavingGender(false);
+    }
+  };
 
   return (
     <View style={styles.form}>
@@ -108,13 +129,14 @@ export function ProfileDetailsForm() {
           render={({ field }) => (
             <OptionToggleGroup
               accessibilityLabel={t('tabScreens.profile.fields.gender')}
-              disabled={!isEditing || isSubmitting}
+              disabled={isSubmitting || isSavingGender}
               onChange={(gender) => {
                 if (formError) {
                   setFormError(undefined);
                 }
 
                 field.onChange(gender);
+                void onGenderChange(gender);
               }}
               options={[
                 { label: t('tabScreens.profile.gender.male'), value: 'male' },

@@ -28,14 +28,14 @@ export function ProfileWeightEntryForm() {
   const {
     control,
     formState: { errors, isSubmitting },
-    handleSubmit,
+    handleSubmit: onSubmit,
     reset,
   } = useForm<ProfileWeightEntryFormValues>({
     defaultValues: getDefaultProfileWeightEntryFormValues(),
     resolver: createZodFormResolver(profileWeightEntryFormSchema),
   });
 
-  const onSave = handleSubmit(async (formValues) => {
+  const onSave = onSubmit(async (formValues) => {
     try {
       setFormError(undefined);
       await createProfileWeightEntry(getProfileWeightEntryFromFormValues(formValues));
