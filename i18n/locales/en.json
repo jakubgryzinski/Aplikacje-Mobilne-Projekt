@@ -1,4 +1,10 @@
 {
+  "common": {
+    "deleteDialog": {
+      "cancelAction": "Cancel",
+      "submitAction": "Delete"
+    }
+  },
   "tabs": {
     "trainingHistory": {
       "label": "Training History"
@@ -37,6 +43,7 @@
           "addAction": "Add Weight Entry",
           "editAction": "Edit Entry",
           "deleteAction": "Delete Entry",
+          "deleteMessage": "Are you sure you want to delete this weight entry?",
           "saveAction": "Save Entry",
           "cancelAction": "Cancel",
           "updateError": "Unable to update this weight entry right now.",

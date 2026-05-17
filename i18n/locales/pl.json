@@ -1,4 +1,10 @@
 {
+  "common": {
+    "deleteDialog": {
+      "cancelAction": "Anuluj",
+      "submitAction": "Usuń"
+    }
+  },
   "tabs": {
     "trainingHistory": {
       "label": "Historia Treningów"
@@ -37,6 +43,7 @@
           "addAction": "Dodaj Pomiar Wagi",
           "editAction": "Edytuj Pomiar",
           "deleteAction": "Usuń Pomiar",
+          "deleteMessage": "Czy na pewno chcesz usunąć ten pomiar wagi?",
           "saveAction": "Zapisz Pomiar",
           "cancelAction": "Anuluj",
           "updateError": "Nie udało się teraz zaktualizować tego pomiaru wagi.",

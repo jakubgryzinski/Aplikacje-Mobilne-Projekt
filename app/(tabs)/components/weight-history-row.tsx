@@ -23,7 +23,7 @@ type WeightHistoryRowProps = {
   isInteractionDisabled: boolean;
   locale: string;
   onCancelEditing: () => void;
-  onDelete: (id: number) => Promise<void>;
+  onRequestDelete: (id: number) => void;
   onSave: (id: number, measuredAt: string, weightKilograms: number) => Promise<void>;
   onStartEditing: (id: number) => void;
 };
@@ -40,7 +40,7 @@ export function WeightHistoryRow({
   isInteractionDisabled,
   locale,
   onCancelEditing,
-  onDelete,
+  onRequestDelete,
   onSave,
   onStartEditing,
 }: WeightHistoryRowProps) {
@@ -100,25 +100,6 @@ export function WeightHistoryRow({
     } catch {
       setValidationState({
         form: t('tabs.profile.weight.history.updateError'),
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
-  async function deleteRow() {
-    if (isSubmitting || isInteractionDisabled) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    setValidationState({});
-
-    try {
-      await onDelete(entry.id);
-    } catch {
-      setValidationState({
-        form: t('tabs.profile.weight.history.deleteError'),
       });
     } finally {
       setIsSubmitting(false);
@@ -226,9 +207,7 @@ export function WeightHistoryRow({
             <ProfileActionButton
               disabled={isInteractionDisabled || isSubmitting}
               label={t('tabs.profile.weight.history.deleteAction')}
-              onPress={() => {
-                void deleteRow();
-              }}
+              onPress={() => onRequestDelete(entry.id)}
             />
           </View>
         </View>
