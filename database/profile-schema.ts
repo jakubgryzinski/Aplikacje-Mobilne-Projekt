@@ -5,7 +5,7 @@ export const PROFILE_DETAILS_TABLE_SQL = `
     id INTEGER PRIMARY KEY CHECK (id = 1),
     avatar_uri TEXT,
     name TEXT NOT NULL DEFAULT '',
-    gender TEXT CHECK (gender IN ('male', 'female') OR gender IS NULL),
+    gender TEXT NOT NULL DEFAULT 'male' CHECK (gender IN ('male', 'female')),
     height_centimeters REAL CHECK (height_centimeters IS NULL OR height_centimeters > 0)
   );
 `;

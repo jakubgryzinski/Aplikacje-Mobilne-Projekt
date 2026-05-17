@@ -15,7 +15,7 @@ type OptionToggleGroupProps<T extends string> = {
   disabled?: boolean;
   onChange: (value: T) => void;
   options: [OptionToggleGroupOption<T>, OptionToggleGroupOption<T>];
-  selectedValue: T | null;
+  selectedValue: T;
 };
 
 export function OptionToggleGroup<T extends string>({

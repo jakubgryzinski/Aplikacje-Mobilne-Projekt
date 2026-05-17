@@ -88,6 +88,13 @@ export async function initializeProfileStorage() {
   await database.execAsync(WEIGHT_HISTORY_TABLE_SQL);
   await database.execAsync(WEIGHT_HISTORY_MEASURED_AT_INDEX_SQL);
   await database.runAsync(`INSERT OR IGNORE INTO profile_details (id) VALUES (?);`, PROFILE_RECORD_ID);
+  await database.runAsync(
+    `UPDATE profile_details
+     SET gender = ?
+     WHERE id = ? AND gender IS NULL;`,
+    emptyProfileDetails.gender,
+    PROFILE_RECORD_ID
+  );
 }
 
 export async function loadProfileDetails(): Promise<ProfileDetails> {
@@ -107,7 +114,9 @@ export async function saveProfileDetails(profileDetails: ProfileDetails): Promis
   const normalizedProfileDetails: ProfileDetails = {
     avatarUri: profileDetails.avatarUri,
     name: profileDetails.name,
-    gender: isProfileGender(profileDetails.gender) ? profileDetails.gender : null,
+    gender: isProfileGender(profileDetails.gender)
+      ? profileDetails.gender
+      : emptyProfileDetails.gender,
     heightCentimeters: normalizeHeightCentimeters(profileDetails.heightCentimeters),
   };
 

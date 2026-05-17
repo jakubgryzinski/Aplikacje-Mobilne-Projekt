@@ -5,7 +5,7 @@ import type { ProfileDetails } from '@/store/profile-types';
 import { formatOptionalNumber, parsePositiveNumberInput } from './profile-form-utils';
 
 export const profileDetailsFormSchema = z.object({
-  gender: z.enum(['male', 'female']).nullable(),
+  gender: z.enum(['male', 'female']),
   height: z.string(),
   name: z.string(),
 }).superRefine((formValues, context) => {

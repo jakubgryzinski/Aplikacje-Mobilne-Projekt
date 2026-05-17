@@ -3,7 +3,7 @@ export type ProfileGender = 'male' | 'female';
 export type ProfileDetails = {
   avatarUri: string | null;
   name: string;
-  gender: ProfileGender | null;
+  gender: ProfileGender;
   heightCentimeters: number | null;
 };
 
@@ -26,6 +26,6 @@ export type ProfileStateHydrationPayload = {
 export const emptyProfileDetails: ProfileDetails = {
   avatarUri: null,
   name: '',
-  gender: null,
+  gender: 'male',
   heightCentimeters: null,
 };
