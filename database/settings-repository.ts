@@ -44,29 +44,49 @@ export async function initializeSettingsStorage() {
   const database = await getDatabase();
   const defaults = getDefaultSettings();
 
-  await database.execAsync(SETTINGS_TABLE_SQL);
-  await database.runAsync(
-    `INSERT OR IGNORE INTO app_settings (key, value) VALUES (?, ?), (?, ?);`,
-    THEME_KEY,
-    defaults.themePreference,
-    LANGUAGE_KEY,
-    defaults.languagePreference
-  );
+  try {
+    console.debug('[Settings] Creating settings table');
+    await database.execAsync(SETTINGS_TABLE_SQL);
+    
+    console.debug('[Settings] Inserting default settings');
+    await database.runAsync(
+      `INSERT OR IGNORE INTO app_settings (key, value) VALUES (?, ?), (?, ?);`,
+      THEME_KEY,
+      defaults.themePreference,
+      LANGUAGE_KEY,
+      defaults.languagePreference
+    );
+    
+    console.debug('[Settings] Settings storage initialized successfully');
+  } catch (error) {
+    console.error('[Settings] Failed to initialize settings storage', error);
+    throw error;
+  }
 }
 
 export async function loadSettings(): Promise<AppSettings> {
   const database = await getDatabase();
-  const rows = await database.getAllAsync<RawSettingRow>(
-    `SELECT key, value FROM app_settings WHERE key IN (?, ?);`,
-    THEME_KEY,
-    LANGUAGE_KEY
-  );
-  const settings = normalizeSettings(rows);
+  
+  try {
+    console.debug('[Settings] Loading settings from database');
+    const rows = await database.getAllAsync<RawSettingRow>(
+      `SELECT key, value FROM app_settings WHERE key IN (?, ?);`,
+      THEME_KEY,
+      LANGUAGE_KEY
+    );
+    
+    const settings = normalizeSettings(rows);
 
-  await saveThemePreference(settings.themePreference);
-  await saveLanguagePreference(settings.languagePreference);
+    console.debug('[Settings] Settings loaded:', settings);
 
-  return settings;
+    await saveThemePreference(settings.themePreference);
+    await saveLanguagePreference(settings.languagePreference);
+
+    return settings;
+  } catch (error) {
+    console.error('[Settings] Failed to load settings', error);
+    throw error;
+  }
 }
 
 export async function saveThemePreference(themePreference: ThemePreference) {

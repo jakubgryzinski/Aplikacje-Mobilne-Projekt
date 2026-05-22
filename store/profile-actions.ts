@@ -59,25 +59,34 @@ export async function hydrateProfileState() {
   profileStore.startHydration();
 
   try {
+    console.debug('[Profile] Initializing profile storage');
     await initializeProfileStorage();
 
+    console.debug('[Profile] Loading profile details and weight history');
     const [profileDetails, weightHistoryEntries] = await Promise.all([
       loadProfileDetails(),
       listWeightHistoryEntries(),
     ]);
+
+    console.debug('[Profile] Profile data loaded successfully:', {
+      hasName: !!profileDetails.name,
+      weightEntriesCount: weightHistoryEntries.length,
+    });
 
     useProfileStore.getState().hydrateProfile({
       profileDetails,
       weightHistoryEntries: sortWeightHistoryEntries(weightHistoryEntries),
     });
   } catch (error) {
+    console.error('[Profile] Failed to initialize profile state.', error);
+    
     useProfileStore.getState().hydrateProfile({
       profileDetails: emptyProfileDetails,
       weightHistoryEntries: [],
     });
-    console.error('Failed to initialize profile state.', error);
   } finally {
     useProfileStore.getState().finishHydration();
+    console.debug('[Profile] Profile hydration finished');
   }
 }
 
